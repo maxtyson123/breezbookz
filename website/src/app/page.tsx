@@ -1,6 +1,8 @@
 "use client"
 import {useEffect, useRef, useState} from "react";
-
+import styles from "@/styles/main.module.css"
+import book from "@/styles/book.module.css"
+import Section from "@/components/section";
 
 export default function Home() {
 
@@ -49,6 +51,7 @@ export default function Home() {
       console.log("animate");
       bookRef.current.classList.toggle("animate");
     }
+
   }
 
   const changePage = () => {
@@ -72,7 +75,7 @@ export default function Home() {
           <ul className="shelf">
             <li ref={bookRef}>
               <img onClick={openBook} className="cover" src="/MainCover.webp"/>
-              <div className="backface"> <img src="/About1.webp"/></div>
+              <div onClick={openBook} className="backface"> <img src="/About1.webp"/></div>
               <div className="pagecontainer">
                 <ul className="pages">
                   <li id={"cover"} className="top" style={{zIndex: 4, top: 0, left: 0}}>
@@ -91,12 +94,84 @@ export default function Home() {
     )
   }
 
+  const siteDisplay = () => {
+    return (
+       <>
+          <Section id={1} color={"#94C47D"}>
+            {/* Main Title CREDIT https://codepen.io/amit_sheen/pen/WNweryv*/}
+              <div>
+                  <div className={book.imgLoader}></div>
+
+                  <div className={book.container}>
+
+                      <h1 className={book.title}>
+                          Breez Bookz
+                      </h1>
+
+                      <div className={book.book}>
+                          <div className={book.gap}></div>
+                          <div className={book.pages}>
+                              <div className={book.page}></div>
+                              <div className={book.page}></div>
+                              <div className={book.page}></div>
+                              <div className={book.page}></div>
+                              <div className={book.page}></div>
+                              <div className={book.page}></div>
+                          </div>
+                          <div className={book.flips}>
+                              <div className={book.flip + " " + book.flip1}>
+                                  <div className={book.flip + " " + book.flip2}>
+                                      <div className={book.flip + " " + book.flip3}>
+                                          <div className={book.flip + " " + book.flip4}>
+                                              <div className={book.flip + " " + book.flip5}>
+                                                  <div className={book.flip + " " + book.flip6}>
+                                                      <div className={book.flip + " " + book.flip7}></div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div className={book.credit}>
+                          Making cooking a "breez"
+                      </div>
+
+                  </div>
+              </div>
+          </Section>
+
+         <Section id={2} color={"#6D9C67"}>
+              {/* Our Product */}
+             <div/>
+        </Section>
+
+         <Section id={3} color={"#477534"}>
+             {/* Our Aim */}s
+            <div/>
+         </Section>
+
+         <Section id={4} color={"#225011"}>
+             {/* Our Aim */}s
+             <div/>
+         </Section>
+
+         <Section id={5} color={"#022E00"}>
+             {/* About Us */}
+             <div/>
+         </Section>
+      </>
+    )
+  }
+
   return (
       <>
         <div className={"fadeOverlay"} ref={fadeRef}></div>
         {
           page ?
-            <div className={"test"}>BREEZ BOOKZ WEBSITE HERE</div>
+            siteDisplay()
               :
             bookDisplay()
         }
