@@ -3,12 +3,30 @@ import {useEffect, useRef, useState} from "react";
 import styles from "@/styles/main.module.css"
 import book from "@/styles/book.module.css"
 import Section from "@/components/section";
+//set PATH=%PATH%;C:\Users\max.tyson\Downloads\node-v21.6.1-win-x64
 
 export default function Home() {
 
 
-  const isReady = useRef(false);
-  const [page, setPage] = useState(false);
+    const isReady = useRef(false);
+    const [page, setPage] = useState(false);
+
+  const subtexts = [
+    "Cooking your way to straight A's",
+    "The best book for the best grades",
+    "Making cooking fun and easy",
+    "Get your copy today",
+    "Providing the best recipes for students",
+    "The book that will change your life as a student",
+    "For students by students",
+    "The best book for students",
+    "The best recipes for students",
+    "The best student cookbook"
+    ]
+
+    const [displayText, setDisplayText] = useState('');
+
+
 
   // Contents
   const bookRef = useRef<any>(null);
@@ -22,6 +40,8 @@ export default function Home() {
     }
 
     isReady.current = true;
+
+
 
   }, []);
 
@@ -54,7 +74,77 @@ export default function Home() {
 
   }
 
-  const changePage = () => {
+
+  const typeText = () => {
+      let i = 0;
+      let currentSubtext = Math.floor(Math.random() * subtexts.length);
+      let text = subtexts[currentSubtext];
+
+      const forwardSpeed = 80;
+      const backwardSpeed = 40;
+
+      const forwardInterval = setInterval(() => {
+          if (i < text.length) {
+
+              // Set the display text
+              setDisplayText(text.substring(0, i + 1));
+
+              console.log(text.charAt(i));
+              i++;
+          } else {
+              // Clear the interval
+              clearInterval(forwardInterval);
+          }
+      }, forwardSpeed);
+
+      // Wait for the forward interval to finish
+      setTimeout(() => {
+          const backwardInterval = setInterval(() => {
+
+              if (i > 0) {
+
+                  // Set the display text
+                  setDisplayText(text.substring(0, i - 1));
+
+                  console.log(text.charAt(i));
+                  i--;
+              } else {
+
+                  // Clear the interval
+                  clearInterval(backwardInterval);
+              }
+          }, backwardSpeed);
+      }, forwardSpeed * text.length + 1000);
+
+      // Wait for the backward interval to finish
+      setTimeout(() => {
+
+          // Reset
+          i = -1;
+
+          // Get a random subtext that is not the current one
+          let newText = Math.floor(Math.random() * subtexts.length);
+          while (newText === currentSubtext) {
+              newText = Math.floor(Math.random() * subtexts.length);
+          }
+
+          // Set the new subtext
+          currentSubtext = newText;
+          text = subtexts[currentSubtext];
+
+          // Clear the text
+          setDisplayText("");
+
+            // Restart the typing
+            typeText();
+
+
+      }, forwardSpeed * text.length + backwardSpeed * text.length + 1000);
+
+  }
+
+
+      const changePage = () => {
 
       // Set the fade out animation
       if(fadeRef.current) {
@@ -64,7 +154,15 @@ export default function Home() {
     // Wait for the fade out animation to finish
     setTimeout(() => {
       setPage(true);
+
+
     }, 800);
+
+    // Start the typing
+    setTimeout(() => {
+        typeText();
+
+    }, 1000);
 
   }
 
@@ -136,7 +234,7 @@ export default function Home() {
                       </div>
 
                       <div className={book.credit}>
-                          Making cooking a "breez"
+                          <p style={{display: "inline"}}>{displayText}</p><span id={"carat"}>|</span>
                       </div>
 
                   </div>

@@ -233,3 +233,20 @@ body{
   top: 0;
   left: 0;
 }
+
+#carat{
+  display: inline;
+  animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
