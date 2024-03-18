@@ -11,18 +11,40 @@ export default function Home() {
     const isReady = useRef(false);
     const [page, setPage] = useState(false);
 
-  const subtexts = [
-    "Cooking your way to straight A's",
-    "The best book for the best grades",
-    "Making cooking fun and easy",
-    "Get your copy today",
-    "Providing the best recipes for students",
-    "The book that will change your life as a student",
-    "For students by students",
-    "The best book for students",
-    "The best recipes for students",
-    "The best student cookbook"
-    ]
+    const subtexts = [
+        "Cooking your way to straight A's",
+        "The best book for the best grades",
+        "Making cooking fun and easy",
+        "Get your copy today!",
+        "Providing the best recipes for students",
+        "The book that will change your life as a student",
+        "For students by students",
+        "The best book for students",
+        "The best recipes for students",
+        "The best student cookbook",
+        "Fueling your academic journey deliciously",
+        "Recipes to boost your brainpower",
+        "Nourishing your mind and body",
+        "Cooking up success, one meal at a time",
+        "Healthy eats for a happy student life",
+        "From kitchen to classroom: recipes for success",
+        "Eating well, living well: a student's guide",
+        "Ditch the stress with these easy-to-make meals",
+        "Empowering students through nutritious cooking",
+        "A recipe for academic excellence and wellness",
+        "Tasty meals, bright minds: your student survival guide",
+        "Revolutionize your study snacks with our recipes",
+        "Eat smart, study smarter: the ultimate cookbook for students",
+        "Achieve greatness with every bite: student-friendly recipes",
+        "Well-fed, well-read: the key to academic success",
+        "Cooking hacks for busy students: delicious and efficient",
+        "Discover the joy of cooking while mastering your studies",
+        "Transform your kitchen into your personal study sanctuary",
+        "Elevate your student life with our wholesome recipes",
+        "Turn mealtime into prime study time with our easy recipes",
+        "The ultimate guide to student cooking and studying",
+        "Fuel your academic journey with our delicious recipes"
+    ];
 
     const [displayText, setDisplayText] = useState('');
 
@@ -194,85 +216,118 @@ export default function Home() {
 
   const siteDisplay = () => {
     return (
-       <>
-          <Section id={1} color={"#94C47D"}>
-            {/* Main Title CREDIT https://codepen.io/amit_sheen/pen/WNweryv*/}
-              <div>
-                  <div className={book.imgLoader}></div>
+        <>
 
-                  <div className={book.container}>
+            {/* Nav Bar */}
+            <nav>
+                <a href="#section-1">Home</a>
+                <a href="#section-2">Our Product</a>
+                <a href="#section-3">Our Aim</a>
+                <a href="#section-4">Our Values</a>
+                <a href="#section-5">About Us</a>
 
-                      <h1 className={book.title}>
-                          Breez Bookz
-                      </h1>
+            </nav>
 
-                      <div className={book.book}>
-                          <div className={book.gap}></div>
-                          <div className={book.pages}>
-                              <div className={book.page}></div>
-                              <div className={book.page}></div>
-                              <div className={book.page}></div>
-                              <div className={book.page}></div>
-                              <div className={book.page}></div>
-                              <div className={book.page}></div>
-                          </div>
-                          <div className={book.flips}>
-                              <div className={book.flip + " " + book.flip1}>
-                                  <div className={book.flip + " " + book.flip2}>
-                                      <div className={book.flip + " " + book.flip3}>
-                                          <div className={book.flip + " " + book.flip4}>
-                                              <div className={book.flip + " " + book.flip5}>
-                                                  <div className={book.flip + " " + book.flip6}>
-                                                      <div className={book.flip + " " + book.flip7}></div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+            <Section id={1} color={"#94C47D"}>
 
-                      <div className={book.credit}>
-                          <p style={{display: "inline"}}>{displayText}</p><span id={"carat"}>|</span>
-                      </div>
+                {/* Main Title CREDIT https://codepen.io/amit_sheen/pen/WNweryv*/}
+                <div>
+                    <div className={book.imgLoader}></div>
 
-                  </div>
-              </div>
-          </Section>
+                    <div className={book.container}>
 
-         <Section id={2} color={"#6D9C67"}>
-              {/* Our Product */}
-             <div/>
-        </Section>
+                        <h1 className={book.title}>
+                            Breez Bookz
+                        </h1>
 
-         <Section id={3} color={"#477534"}>
-             {/* Our Aim */}s
-            <div/>
-         </Section>
+                        <div className={book.book}>
+                            <div className={book.gap}></div>
+                            <div className={book.pages}>
+                                <div className={book.page}></div>
+                                <div className={book.page}></div>
+                                <div className={book.page}></div>
+                                <div className={book.page}></div>
+                                <div className={book.page}></div>
+                                <div className={book.page}></div>
+                            </div>
+                            <div className={book.flips}>
+                                <div className={book.flip + " " + book.flip1}>
+                                    <div className={book.flip + " " + book.flip2}>
+                                        <div className={book.flip + " " + book.flip3}>
+                                            <div className={book.flip + " " + book.flip4}>
+                                                <div className={book.flip + " " + book.flip5}>
+                                                    <div className={book.flip + " " + book.flip6}>
+                                                        <div className={book.flip + " " + book.flip7}></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-         <Section id={4} color={"#225011"}>
-             {/* Our Aim */}s
-             <div/>
-         </Section>
+                        <div className={book.credit}>
+                            <p style={{display: "inline"}}>{displayText}</p><span id={"carat"}>|</span>
+                        </div>
 
-         <Section id={5} color={"#022E00"}>
-             {/* About Us */}
-             <div/>
-         </Section>
-      </>
+                        <ul className="circles">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+
+                    </div>
+                </div>
+            </Section>
+
+            <Section id={2} color={"#6D9C67"}>
+                {/* Our Product */}
+                <div/>
+            </Section>
+
+            <Section id={3} color={"#477534"}>
+                {/* Our Aim */}s
+                <div/>
+            </Section>
+
+            <Section id={4} color={"#225011"}>
+                {/* Our Values */}s
+                <div/>
+            </Section>
+
+            <Section id={5} color={"#022E00"}>
+                {/* About Us */}
+                <div/>
+                <section>
+                    <div className='air air1'></div>
+                    <div className='air air2'></div>
+                    <div className='air air3'></div>
+                    <div className='air air4'></div>
+                </section>
+            </Section>
+
+
+        </>
     )
   }
 
-  return (
-      <>
-        <div className={"fadeOverlay"} ref={fadeRef}></div>
-        {
-          page ?
-            siteDisplay()
-              :
-            bookDisplay()
-        }
-      </>
-  );
+    return (
+        <>
+            <div className={"fadeOverlay"} ref={fadeRef}></div>
+            {
+                page ?
+                    siteDisplay()
+                    :
+                    bookDisplay()
+            }
+        </>
+    );
 }

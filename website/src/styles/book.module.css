@@ -9,14 +9,14 @@
   text-align: center;
   font-weight: bold;
   font-size: 156px;
-  margin-top: 5%;
+  margin-top: 15vh;
   z-index: 2;
   text-shadow: 0px 10px 5px rgba(0, 0, 0, 0.25);
 }
 
 .credit {
   text-align: center;
-  margin-top: 30vh;
+  margin-top: 35vh;
   font-size: 32px;
   perspective: 630px;
   perspective-origin: center 50px;

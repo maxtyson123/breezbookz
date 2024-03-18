@@ -8,11 +8,13 @@
 .next{
     position: absolute;
     top: 96%;
-    right: 45%;
     rotate: 90deg;
     background-color: #d3eec6;
     padding: 10px;
     cursor: pointer;
     border-radius: 5px 0px 0px 5px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+
+    /* Center self */
+    left: 48%;
 }
