@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import styles from "@/styles/main.module.css"
 import book from "@/styles/book.module.css"
 import Section from "@/components/section";
+import { motion } from "framer-motion";
 //set PATH=%PATH%;C:\Users\max.tyson\Downloads\node-v21.6.1-win-x64
 
 export default function Home() {
@@ -45,6 +46,12 @@ export default function Home() {
         "The ultimate guide to student cooking and studying",
         "Fuel your academic journey with our delicious recipes"
     ];
+
+    const bookDescription =  "BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH\n" +
+        "                        BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH\n" +
+        "                        BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH\n" +
+        "                        BLAH BLAH BLAH "
+    const splitDescription = bookDescription.split(" ");
 
     const [displayText, setDisplayText] = useState('');
 
@@ -111,7 +118,6 @@ export default function Home() {
               // Set the display text
               setDisplayText(text.substring(0, i + 1));
 
-              console.log(text.charAt(i));
               i++;
           } else {
               // Clear the interval
@@ -128,7 +134,6 @@ export default function Home() {
                   // Set the display text
                   setDisplayText(text.substring(0, i - 1));
 
-                  console.log(text.charAt(i));
                   i--;
               } else {
 
@@ -188,6 +193,17 @@ export default function Home() {
 
   }
 
+  // Setup the animation toggler when scrolled into view
+    useEffect(() => {
+
+
+
+
+    }, []);
+
+  const orderNow = () => {
+      console.log("Order Now")
+  }
 
   const bookDisplay = () => {
     return (
@@ -289,12 +305,41 @@ export default function Home() {
             </Section>
 
             <Section id={2} color={"#6D9C67"}>
-                {/* Our Product */}
-                <div/>
+                <div className={styles.productSection}>
+
+                    <div>
+                        {/* Title */}
+                        <h1> The Hungry Scholars Survival Handbook </h1>
+                        <h2>Cooking your way to straight A’s</h2>
+
+                        {/* Blurb */}
+                        {splitDescription.map((el, i) => (
+                            <motion.span
+                                viewport={{once: false}}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{
+                                    duration: 0.25,
+                                    delay: i / 10,
+                                }}
+                                key={i}
+                            >
+                                {el}{" "}
+                            </motion.span>
+                        ))}
+
+                        {/* Order Now */}
+                        <motion.button onClick={orderNow} whileTap={{scale: 0.85}}> Order Now </motion.button>
+
+                    </div>
+
+                    {/* Book Image */}
+                    <img data-ssc="flip-right" src={"/MainCover.webp"} alt={"The Hungry Scholars Survival Handbook"}/>
+                </div>
             </Section>
 
             <Section id={3} color={"#477534"}>
-                {/* Our Aim */}s
+            {/* Our Aim */}s
                 <div/>
             </Section>
 

@@ -471,3 +471,37 @@ nav a:hover {
   }
 
 }
+
+[data-ssc] {
+  transition-property: opacity, transform;
+  transition-duration: 1s;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation-timeline: view();
+  animation-delay: 0.25s;
+}
+
+[data-ssc="flip-right"] {
+  animation-name: flipRight;
+  opacity: 0;
+}
+
+[data-ssc=flip-] {
+  transform: perspective(2500px) rotate(0);
+  backface-visibility: hidden;
+  transition-property: transform;
+}
+
+@keyframes flipRight {
+  from {
+    opacity: 0;
+    transform: perspective(2500px) rotateX(100deg);
+  }
+  10%{
+    opacity: 1;
+  }
+  to {
+    transform: perspective(2500px) rotateX(0);
+    opacity: 1;
+  }
+}
