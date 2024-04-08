@@ -1,0 +1,23 @@
+{
+  "name": "Frittata",
+  "image": "none",
+  "video": "none",
+  "ingredients": [
+    {
+      "multi_option" : [
+        {
+          "id": "5237500-KGM-000",
+          "name": "Kumura",
+          "amount": {"range":  [4, 5]},
+          "unit": "ea"
+        },
+        {
+          "id": "5045849-KGM-000",
+          "name": "Potatoes",
+          "amount": {"range":  [4, 5]},
+          "unit": "ea"
+        }
+      ],
+    }
+  ]
+}

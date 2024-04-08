@@ -1,59 +1,14 @@
-from datetime import datetime
+import os
 
 import requests
 import json
 import subprocess
 
+# BUGS: Can bypass limit
+
 # Constants
 PRODUCT_URL = "https://api-prod.newworld.co.nz/v1/edge/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919/decorateProducts"
 ACCOUNT_URL = "https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser"
-PAYLOAD = json.dumps({
-    "productIds": [
-        "5104350-KGM-000",
-        "5045849-KGM-000",
-        "5005953-EA-000",
-        "5086575-EA-000",
-        "5001949-EA-000",
-        "5045856-KGM-000",
-        "5003744-EA-000",
-        "5040464-EA-000",
-        "5223140-KGM-000",
-        "5046565-KGM-000",
-        "5002588-EA-000",
-        "5251947-EA-000",
-        "5038667-EA-000",
-        "5021440-EA-000",
-        "5004861-EA-000",
-        "5038284-EA-000",
-        "5039354-EA-000",
-        "5002760-EA-000",
-        "5002679-EA-000",
-        "5002547-EA-000",
-        "5004590-EA-000",
-        "5039956-EA-000",
-        "5003846-EA-000",
-        "5092664-EA-000",
-        "5046611-KGM-000",
-        "5268694-EA-000",
-        "5040098-KGM-000",
-        "5046440-EA-000",
-        "5220069-EA-000",
-        "5039965-KGM-000",
-        "5039973-EA-000",
-        "5002515-EA-000",
-        "5221711-EA-000",
-        "5040641-EA-000",
-        "5013255-EA-000",
-        "5046542-KGM-000",
-        "5310072-EA-000",
-        "5248791-EA-000",
-        "5003808-EA-000",
-        "5017889-EA-000",
-        "5003840-EA-000",
-        "5002586-EA-000",
-        "5127149-EA-000"
-    ]
-})
 
 print("BREEZBOOKZ Pak N Save Price Scaper v0.01")
 print("=" * 40)
@@ -71,6 +26,28 @@ headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + bearerToken,
 }
+payload_product = {
+    "productIds": [
+    ]
+}
+
+# Read all the json files in the folder
+for filename in os.listdir("../recpies"):
+    if filename.endswith(".json"):
+        print(f"    - Reading {filename}")
+        with open(f"../recpies/{filename}") as f:
+            data = json.load(f)
+            for i in data["ingredients"]:
+                if "multi_option" in i:
+                    for j in i["multi_option"]:
+                        id_item = j['id']
+                        if id_item not in payload_product["productIds"]:
+                            payload_product["productIds"].append(id_item)
+                else:
+                    id_item = i['id']
+                    if id_item not in payload_product["productIds"]:
+                        payload_product["productIds"].append(id_item)
+PAYLOAD = json.dumps(payload_product)
 
 # Fetch the data
 print("Fetching product details...")
@@ -87,13 +64,27 @@ for i in data['products']:
 
     try:
         # Extract data
-        id = i['productId']
+        id_item = i['productId']
         name = i['name']
-        price = i['singlePrice']['comparativePrice']
-        cents = price['pricePerUnit']
-        dollar = cents / 100
-        quantity_per = price['unitQuantity']
-        unit = str(quantity_per) + price['unitQuantityUom']
+
+        # Check if comparative price exists
+        if 'comparativePrice' in i['singlePrice']:
+            price = i['singlePrice']['comparativePrice']
+            cents = price['pricePerUnit']
+            quantity_per = price['unitQuantity']
+            unit = price['unitQuantityUom']
+
+        elif 'variableWeight' in i:
+            cents = i['singlePrice']['price']
+            quantity_per = 1
+            unit = "kg"
+        else:
+            cents = i['singlePrice']['price']
+            quantity_per = 1
+            unit = "ea"
+
+
+
         base_price = i['singlePrice']['price'] / 100
         base_quantity = (i['singlePrice']['price'] / cents) * quantity_per
 
@@ -103,9 +94,10 @@ for i in data['products']:
         continue
 
     # Round
-    dollar = round(dollar, 2)
+    dollar = round(cents / 100, 2)
     base_price = round(base_price, 2)
-    base_quantity = round(base_quantity, 1)
+    base_quantity = round(base_quantity, 0)
 
     print(
-        f"Product ID: {i['productId']}, Name: {i['name']}, Price: ${dollar} per {unit} Base Unit: {base_quantity}{price['unitQuantityUom']} ${base_price}")
+        f"Product ID: {i['productId']}, Name: {i['name']}, Price: ${dollar} per {quantity_per}{unit} Base Unit: "
+        f"{base_quantity}{unit} ${base_price}")
