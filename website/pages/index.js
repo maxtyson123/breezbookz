@@ -1,6 +1,6 @@
 import { Footer, Navbar } from '../components';
 import { About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew, World } from '../sections';
-//set PATH=%PATH%;C:\Users\max.tyson\Downloads\node-v21.6.1-win-x64
+// set PATH=%PATH%;C:\Users\max.tyson\Downloads\node-v21.6.1-win-x64
 const Home = () => (
   <div className="bg-primary-black overflow-hidden">
     <Navbar />
