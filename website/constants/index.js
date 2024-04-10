@@ -1,27 +1,27 @@
 export const exploreWorlds = [
   {
-    id: 'world-1',
-    imgUrl: '/planet-01.png',
+    id: 'explore-1',
+    imgUrl: '/bepie.webp',
     title: 'Budget Friendly Meals',
   },
   {
-    id: 'world-2',
+    id: 'explore-2',
     imgUrl: '/planet-02.png',
     title: 'Interactive QR Codes',
   },
   {
-    id: 'world-3',
+    id: 'explore-3',
     imgUrl: '/planet-03.png',
     title: 'Shopping List Generator',
   },
   {
-    id: 'world-4',
+    id: 'explore-4',
     imgUrl: '/planet-04.png',
-    title: 'Meal Planner',
+    title: 'Student Focus',
   },
   {
-    id: 'world-5',
-    imgUrl: '/planet-05.png',
+    id: 'explore-5',
+    imgUrl: '/frit.webp',
     title: 'Well Being Focus',
   },
 ];

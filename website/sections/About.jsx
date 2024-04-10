@@ -22,19 +22,12 @@ const About = () => (
         variants={fadeIn('up', 'tween', 0.2, 1)}
         className="mt-[8px] font-normal sm:text-[32px] text-[20px] text-center text-secondary-white"
       >
-        <span className="font-extrabold text-white text-[#94C47D]">Breez Bookz</span> is a yap yap
-        yap yap yap yap, yap yap yap yap yap yap yap yap yap
-        yap yap's yap yap, yap yap yap yap yap yap yap yap yap
-        yap, yap yap yap yap yap{' '}
-        <span className="font-extrabold text-white text-[#94C47D]">
-          student well being
-        </span>{' '}
-        yap yap, yap yap{' '}
-        <span className="font-extrabold text-white text-[#94C47D]">cooking</span> yap yap yap
-        yap yap yap yap yap yap yap, yap yap yap yap
-        yap. yap's{' '}
-        <span className="font-extrabold text-white text-[#94C47D]">conner</span> yap yap
-        yap yap yap yap yap yap
+        Why <span className="font-extrabold text-[#94C47D]"> Breez Bookz </span> and not Jamie Oliver? Or
+        Gordan Ramsey? Or every other ‘101 recipes for you’ website. This food information and recipe guide provides
+        all <span className="font-extrabold text-[#94C47D]">young adults </span> who aren't confident in the kitchen
+        with easy, <span className="font-extrabold text-[#94C47D]"> healthy </span> and cheap
+        meals to make your stressful university easier. We are here to help you make the most of your time at university
+        by providing you with the tools to make your own meals and <span className="font-extrabold text-[#94C47D]"> save money </span>.
       </motion.p>
 
       <motion.img
