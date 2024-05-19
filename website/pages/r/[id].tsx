@@ -2,9 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
-import styles from '../../styles/rec.module.css';
+import styles from '../../styles';
+import {Footer, InsightCard, Navbar, TitleText, TypingText} from "../../components";
+import {About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew} from "../../sections";
+import {motion} from "framer-motion";
+import {fadeIn, staggerContainer} from "../../utils/motion";
+import {insights} from "../../constants";
 
-export default () => {
+
+export default function Page() {
   const userURL = 'https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser';
   const cartURL = 'https://api-prod.newworld.co.nz/v1/edge/cart';
   const productURL = 'https://api-prod.newworld.co.nz/v1/edge/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919/decorateProducts';
@@ -17,28 +23,71 @@ export default () => {
   const [accessToken, setAccessToken] = useState(null);
   const fetched = useRef(false);
 
+  const [loadingMessage, setLoadingMessage] = useState('Loading...');
+
+  const logUserIn = async () => {
+    const data = JSON.stringify({
+      email: 'a',
+      password: 'b',
+    });
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/api/login',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+
+    // Get the cookies from the login
+    const response = await axios(config);
+    return response.data.cookie;
+  };
+
+  const getKey = async (cookie) => {
+    const data = JSON.stringify({
+      idCookie: cookie,
+    });
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/api/key',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data,
+    };
+
+    // Get the cookies from the login
+    const response = await axios(config);
+    return response.data.token;
+
+  }
+
   const dataFetch = async (id) => {
     // Load the json file with the id
     console.log('Fetching ID: ', id);
 
     // Fetch the recipe data
+    setLoadingMessage('Fetching Recipe Data...');
     let recipeData = await fetch(`/data/recpies/${id}.json`);
     recipeData = await recipeData.json();
     setRecipe(recipeData);
     console.log('Recipe: ', recipeData);
 
-    // Get the public key
-    const cookies = {
-      eCom_STORE_ID: '529d66cc-60e3-432e-b8d1-efc9f2ec4919',
-      STORE_ID_V2: '529d66cc-60e3-432e-b8d1-efc9f2ec4919|False',
-      server_nearest_store_v2: '{"StoreId":"529d66cc-60e3-432e-b8d1-efc9f2ec4919","StoreLat":"-35.725958","StoreLng":"174.32475","UserLat":"-35.7665","UserLng":"174.3717","IsSuccess":true}',
-    };
-    const publicKey = await axios.get(userURL, {
-      headers: {
-        Cookie: Object.entries(cookies).map(([key, value]) => `${key}=${value}`).join('; '),
-      },
-    });
-    setAccessToken(publicKey.data.access_token);
+    // Log the user in
+    setLoadingMessage('Logging User In...');
+    let cookie = await logUserIn();
+    cookie = cookie.split('=')[1].split(';')[0];
+    console.log('Cookie: ', cookie);
+
+    // Get the access token
+    const token = await getKey(cookie);
+    console.log('Token: ', token);
+    setAccessToken(token);
 
     // Create the array of product ids
     // @ts-ignore
@@ -54,16 +103,40 @@ export default () => {
       url: productURL,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${publicKey.data.access_token}`,
+        Authorization: `Bearer ${token}`,
       },
       data: payload,
     };
     console.log('Config: ', config);
 
+    // Fetch the prices
+    setLoadingMessage('Fetching Prices...');
     const response = await axios(config);
     const apiPrices = response.data.products;
     setPrices(apiPrices);
     console.log('Prices: ', apiPrices);
+
+    // Set the store
+    setLoadingMessage('Storing Cart...');
+    const store = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://api-prod.newworld.co.nz/v1/edge/cart/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios.request(store)
+      .then((responseS) => {
+        console.log(JSON.stringify(responseS.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // Clear the loading message
+    setLoadingMessage("");
   };
 
   useEffect(() => {
@@ -222,6 +295,9 @@ export default () => {
   };
 
   const addToCart = async (ingredient) => {
+
+    setLoadingMessage('Adding ' + ingredient.name  +' to Cart...');
+
     // Get the ingredient
     const priceInfo = prices.find((price) => price.productId === ingredient.id);
     const item = {
@@ -251,34 +327,110 @@ export default () => {
 
     const response = await axios(config);
     console.log('Response: ', response.data);
+    setLoadingMessage('');
   };
 
+  const addAllToCart = async () => {
+
+      for (let i = 0; i < recipe.ingredients.length; i++) {
+          await addToCart(recipe.ingredients[i]);
+      }
+  }
+
+
+  // @ts-ignore
+  // @ts-ignore
   return (
+
     <>
-      <div>Id Page</div>
-      <div>NAME: {recipe?.name}</div>
-      <div>TOKEN: {accessToken}</div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <div className={styles.ingredients}>
-        {recipe?.ingredients.map((ingredient, index) => (
-          <div className={styles.ingredient} key={index}>
-            <img src={`https://a.fsimg.co.nz/product/retail/fan/image/400x400/${ingredient.id.split('-')[0]}.png`} width={200} height={200} />
-            <p>{ingredient.name}</p>
-            <p>{!ingredient.amount?.range ? ingredient.amount : `${ingredient.amount.range[0]} - ${ingredient.amount.range[1]}`}</p>
-            <div>
-              <p>{printPrice(ingredient)}</p>
-              <p>{printServings(ingredient)}</p>
-            </div>
-            <button type="submit" onClick={() => { addToCart(ingredient); }}>Add To Cart</button>
-            <Link href={`https://www.paknsave.co.nz/shop/product/${ingredient.id}`}><button type="button">View on website</button></Link>
+
+      {/* Loading Overlay */}
+      {loadingMessage &&
+          <div
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'rgba(0,0,0,0.9)',
+                zIndex: 1000,
+                color: 'white',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '2rem',
+
+            }}
+          >
+            <img src="/book-loading.gif" alt="Loading" style={{width: '100px', height: '100px'}}/>
+            <p> {loadingMessage} </p>
           </div>
-        ))}
+      }
+
+      {/* Primary Page Layout */}
+      <div className="bg-primary-black overflow-hidden">
+        <Navbar/>
+        <div className="relative">
+          <section className={`${styles.paddings} relative z-10`}>
+            <motion.div
+                //@ts-ignore
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="show"
+                viewport={{once: false, amount: 0.25}}
+                className={`${styles.innerWidth} mx-auto flex flex-col`}
+                key={recipe?.ingredients.length}
+            >
+              <TitleText title={recipe?.name} textStyles="text-center"/>
+              <TypingText title="| The Hungry Scholars Survival Handbook" textStyles="text-center"/>
+              <motion.div
+                  variants={fadeIn('up', 'spring', (0.1) * 0.5, 1)}
+                  className="flex justify-center mt-[50px] gap-[30px] w-full p-10"
+              >
+                <button onClick={addAllToCart} type="button"
+                        className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">
+                  <img
+                      src="/cart.svg"
+                      alt="headset"
+                      className="w-[24px] h-[24px] object-contain"
+                  />
+                  <span className="font-normal text-[16px] text-white"> Add All To Cart </span>
+                </button>
+              </motion.div>
+              <div className="mt-[50px] flex flex-col gap-[30px]">
+                {recipe?.ingredients.map((item, index) => (
+                    <InsightCard
+                        key={`insight-${index}`}
+                        index={index}
+                        title={item.name}
+                        subtitle={printPrice(item) + " | " + printServings(item)}
+                        imgUrl={`https://a.fsimg.co.nz/product/retail/fan/image/400x400/${item.id.split('-')[0]}.png`}
+                        clickCallBack={() => addToCart(item)
+                        }
+                    />
+                ))}
+              </div>
+              <motion.div
+                  variants={fadeIn('up', 'spring', (recipe?.ingredients.length + 1) * 0.5, 1)}
+                  className="flex justify-center mt-[50px] gap-[30px] w-full p-10"
+              >
+                <button onClick={addAllToCart} type="button"
+                        className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">
+                  <img
+                      src="/cart.svg"
+                      alt="headset"
+                      className="w-[24px] h-[24px] object-contain"
+                  />
+                  <span className="font-normal text-[16px] text-white"> Add All To Cart </span>
+                </button>
+              </motion.div>
+            </motion.div>
+          </section>
+          <div className="gradient-04 z-0"/>
+        </div>
+        <Footer/>
       </div>
-      <button className={styles.addAllButton} type="submit"> Add All To Cart</button>
     </>
-  );
+  )
 };

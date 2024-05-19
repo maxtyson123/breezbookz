@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 
 import { fadeIn } from '../utils/motion';
 
-const InsightCard = ({ imgUrl, title, subtitle, index }) => (
+const InsightCard = ({ imgUrl, title, subtitle, index, clickCallBack }) => (
   <motion.div
     variants={fadeIn('up', 'spring', index * 0.5, 1)}
     className="flex md:flex-row flex-col gap-4"
+    key={`insight-${index}`}
+    id={`insight-${index}`}
   >
     <img
       src={imgUrl}
@@ -25,12 +27,14 @@ const InsightCard = ({ imgUrl, title, subtitle, index }) => (
       </div>
 
       <div
-        className="lg:flex hidden items-center justify-center w-[100px] h-[100px] rounded-full bg-transparent border-[1px] border-white"
+        className="lg:flex hidden items-center justify-center w-[100px] h-[100px] rounded-full bg-transparent border-[1px] border-white cursor-pointer"
+        onClick={clickCallBack}
       >
         <img
-          src="/arrow.svg"
+          src="/cart.svg"
           alt="arrow"
           className="w-[40%] h-[40%] object-contain"
+
         />
       </div>
     </div>
