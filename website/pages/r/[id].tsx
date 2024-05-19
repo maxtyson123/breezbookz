@@ -8,6 +8,7 @@ import {About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew} from "..
 import {motion} from "framer-motion";
 import {fadeIn, staggerContainer} from "../../utils/motion";
 import {insights} from "../../constants";
+import {NotificationContainer, Notification} from "../../components/Notification";
 
 
 export default function Page() {
@@ -25,10 +26,12 @@ export default function Page() {
 
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
 
+  // Notifications state
+  const [notifications, setNotifications] = useState([]);
+
   const logUserIn = async () => {
     const data = JSON.stringify({
-      email: 'a',
-      password: 'b',
+      email: 'max.tyson@wbhs.school.nz',
     });
 
     const config = {
@@ -83,6 +86,7 @@ export default function Page() {
     let cookie = await logUserIn();
     cookie = cookie.split('=')[1].split(';')[0];
     console.log('Cookie: ', cookie);
+    addNotification('Logged in successfully');
 
     // Get the access token
     const token = await getKey(cookie);
@@ -129,7 +133,6 @@ export default function Page() {
 
     axios.request(store)
       .then((responseS) => {
-        console.log(JSON.stringify(responseS.data));
       })
       .catch((error) => {
         console.log(error);
@@ -147,14 +150,12 @@ export default function Page() {
       return;
     }
 
-    console.log('ID: ', id);
-
     if (fetched.current) {
       return;
     }
 
     fetched.current = true;
-    console.log('Fetching data');
+
     dataFetch(id).then(() => { console.log('Data fetched'); });
   }, [router.query]);
 
@@ -294,16 +295,18 @@ export default function Page() {
     return `$${(priceForAmount / 100).toFixed(2)} for ${amount}${unit}`;
   };
 
-  const addToCart = async (ingredient) => {
+  const addToCart = async (ingredient, mass = false) => {
 
     setLoadingMessage('Adding ' + ingredient.name  +' to Cart...');
+
+    console.log('Ingredient: ', ingredient);
 
     // Get the ingredient
     const priceInfo = prices.find((price) => price.productId === ingredient.id);
     const item = {
       productId: priceInfo.productId,
       quantity: ingredient.amount.range ? (ingredient.amount.range[0] + ingredient.amount.range[1]) / 2 : ingredient.amount,
-      sale_type: ingredient.unit ? 'WEIGHT' : 'UNITS',
+      sale_type: ingredient.unit == "ea" ? 'UNITS' : 'WEIGHT',
     };
 
     const payload = JSON.stringify({
@@ -312,7 +315,7 @@ export default function Page() {
       ],
     });
 
-    console.log('Payload: ', payload);
+    console.log('Payload: ', JSON.parse(payload));
 
     const config = {
       method: 'post',
@@ -328,17 +331,40 @@ export default function Page() {
     const response = await axios(config);
     console.log('Response: ', response.data);
     setLoadingMessage('');
+
+    if(!mass){
+      addNotification(ingredient.name + ' added to cart');
+    }
+
   };
 
   const addAllToCart = async () => {
 
       for (let i = 0; i < recipe.ingredients.length; i++) {
-          await addToCart(recipe.ingredients[i]);
+          await addToCart(recipe.ingredients[i], true);
       }
+    addNotification('All items added to cart');
+  }
+
+  const addNotification = (text, type = 'success') => {
+    const notification = {
+        id: Math.random(),
+        text,
+        type,
+    }
+    setNotifications(prevState =>
+        [...prevState, notification]
+      );
+
+    // set timeout to remove
+    setTimeout(() => {
+        setNotifications(prevState =>
+            prevState.filter((notification) => notification.id !== notification.id)
+        );
+    }, 500000);
   }
 
 
-  // @ts-ignore
   // @ts-ignore
   return (
 
@@ -429,6 +455,17 @@ export default function Page() {
           </section>
           <div className="gradient-04 z-0"/>
         </div>
+        <NotificationContainer position={"bottom"}>
+          {notifications &&
+              notifications.map((notification) => (
+                  <Notification
+                      key={notification.id}
+                      notification={notification}
+                      notifications={notifications}
+                      setNotifications={setNotifications}
+                  />
+              ))}
+        </NotificationContainer>
         <Footer/>
       </div>
     </>
