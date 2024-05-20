@@ -158,28 +158,38 @@ li {
   width: 225px;
   margin: 0.5rem 1.5rem;
   padding: 0 1rem;
-  height: 3rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  animation: border 2s;
+  background: #94C47D;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
-/* Bottom timeout border */
-@keyframes border {
-  0% {
-    background: linear-gradient(90deg, #94C47D 0%,  #94C47D 100%, #477534 100%, #477534 100%);
 
-  }
-  50% {
-    background: linear-gradient(90deg, #94C47D 0%,  #94C47D 50%, #477534 50%, #477534 100%);
+/* Line at the bottom like a border */
+li > span {
+    position: absolute;
+    bottom: 1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #ffffff;
+    animation: width 3s reverse linear;
+
+}
+
+@keyframes width {
+  0% {
+    width: 0;
   }
   100% {
-    background: linear-gradient(90deg, #94C47D 0%,  #94C47D 0%, #477534 100%, #477534 100%);
+    width: 100%;
   }
-
 }
+
 
 .notification-text {
   margin: auto auto auto 0;

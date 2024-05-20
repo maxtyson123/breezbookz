@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -30,8 +31,16 @@ export default function Page() {
   const [notifications, setNotifications] = useState([]);
 
   const logUserIn = async () => {
+
+    // Check if the session id cookie is present
+    const sessionId = document.cookie.split(';').find((cookie) => cookie.includes('SessionCookieIdV2'));
+    if (sessionId) {
+      return sessionId.split('=')[1];
+    }
+
     const data = JSON.stringify({
       email: 'max.tyson@wbhs.school.nz',
+      password: '',
     });
 
     const config = {
@@ -46,7 +55,14 @@ export default function Page() {
 
     // Get the cookies from the login
     const response = await axios(config);
-    return response.data.cookie;
+    const cookie =  response.data.cookie;
+
+    const timeout = cookie.split(';')[1].split('=')[1];
+    const cdata = cookie.split(';')[0].split('=')[1];
+
+    // Set the cookie
+    document.cookie = `SessionCookieIdV2=${cdata}; expires=${timeout}; Secure; SameSite=None`;
+    return cdata;
   };
 
   const getKey = async (cookie) => {
@@ -84,7 +100,6 @@ export default function Page() {
     // Log the user in
     setLoadingMessage('Logging User In...');
     let cookie = await logUserIn();
-    cookie = cookie.split('=')[1].split(';')[0];
     console.log('Cookie: ', cookie);
     addNotification('Logged in successfully');
 
@@ -299,8 +314,6 @@ export default function Page() {
 
     setLoadingMessage('Adding ' + ingredient.name  +' to Cart...');
 
-    console.log('Ingredient: ', ingredient);
-
     // Get the ingredient
     const priceInfo = prices.find((price) => price.productId === ingredient.id);
     const item = {
@@ -314,8 +327,6 @@ export default function Page() {
         item,
       ],
     });
-
-    console.log('Payload: ', JSON.parse(payload));
 
     const config = {
       method: 'post',
@@ -361,7 +372,7 @@ export default function Page() {
         setNotifications(prevState =>
             prevState.filter((notification) => notification.id !== notification.id)
         );
-    }, 500000);
+    }, 3000);
   }
 
 

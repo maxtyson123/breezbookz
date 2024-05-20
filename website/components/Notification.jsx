@@ -61,6 +61,7 @@ export const Notification = ({ notifications, setNotifications, notification }) 
                 {text}
             </h3>
             <CloseButton color={style ? "white" : "white"} handleClose={handleClose} />
+            <span className="bottomline" />
         </motion.li>
     );
 };
