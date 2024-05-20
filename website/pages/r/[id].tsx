@@ -28,7 +28,7 @@ export default function Page() {
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
 
   // Notifications state
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<any>([]);
 
   const logUserIn = async () => {
 
@@ -38,31 +38,8 @@ export default function Page() {
       return sessionId.split('=')[1];
     }
 
-    const data = JSON.stringify({
-      email: 'max.tyson@wbhs.school.nz',
-      password: '',
-    });
-
-    const config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: '/api/login',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data,
-    };
-
-    // Get the cookies from the login
-    const response = await axios(config);
-    const cookie =  response.data.cookie;
-
-    const timeout = cookie.split(';')[1].split('=')[1];
-    const cdata = cookie.split(';')[0].split('=')[1];
-
-    // Set the cookie
-    document.cookie = `SessionCookieIdV2=${cdata}; expires=${timeout}; Secure; SameSite=None`;
-    return cdata;
+    // Redirect to login page
+    window.location.href = '/login?returnUrl=/r/' + router.query.id;
   };
 
   const getKey = async (cookie) => {

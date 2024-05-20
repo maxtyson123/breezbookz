@@ -37,5 +37,5 @@ export default async function handler(
         }
     }
 
-    response.status(200).json({cookie : cookie});
+    response.status(200).json({cookie : cookie, data: apiRessy.data});
 }
