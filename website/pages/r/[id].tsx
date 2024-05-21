@@ -10,6 +10,7 @@ import {motion} from "framer-motion";
 import {fadeIn, staggerContainer} from "../../utils/motion";
 import {insights} from "../../constants";
 import {NotificationContainer, Notification} from "../../components/Notification";
+import {CheckCartInCart, CheckInCart, GetCart, UpdateCart} from "../../constants/cart";
 
 
 export default function Page() {
@@ -18,12 +19,11 @@ export default function Page() {
   const productURL = 'https://api-prod.newworld.co.nz/v1/edge/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919/decorateProducts';
   const router = useRouter();
 
-  // eslint-disable-next-line no-undef
   const [recipe, setRecipe] = useState < any > (null);
-  // eslint-disable-next-line no-undef
   const [prices, setPrices] = useState < any > (null);
   const [accessToken, setAccessToken] = useState(null);
   const fetched = useRef(false);
+  const [cart, setCart] = useState(0);
 
   const [loadingMessage, setLoadingMessage] = useState('Loading...');
 
@@ -71,6 +71,13 @@ export default function Page() {
     setLoadingMessage('Fetching Recipe Data...');
     let recipeData = await fetch(`/data/recpies/${id}.json`);
     recipeData = await recipeData.json();
+    recipeData.id = id;
+
+    // Store if the item is in the cart or not
+    for (let i = 0; i < recipeData.ingredients.length; i++) {
+        recipeData.ingredients[i].inCart =  await CheckInCart(recipeData.ingredients[i].id, recipeData.id);
+      }
+
     setRecipe(recipeData);
     console.log('Recipe: ', recipeData);
 
@@ -103,7 +110,6 @@ export default function Page() {
       },
       data: payload,
     };
-    console.log('Config: ', config);
 
     // Fetch the prices
     setLoadingMessage('Fetching Prices...');
@@ -123,12 +129,9 @@ export default function Page() {
       },
     };
 
-    axios.request(store)
-      .then((responseS) => {
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    // Get the cart
+    setLoadingMessage('Getting Cart...');
 
     // Clear the loading message
     setLoadingMessage("");
@@ -291,11 +294,30 @@ export default function Page() {
 
     setLoadingMessage('Adding ' + ingredient.name  +' to Cart...');
 
+    // Get the cart
+    const currentCart = await GetCart();
+
+    // Check if the item is already in the cart
+    const itemInCart = currentCart.products.find((item) => item.productId === ingredient.id);
+    let addQuantity = 0;
+    if(itemInCart){
+        const itemInCartThis = itemInCart.recipeAmount.find((item) => item.recipeId === recipe.id);
+        if(itemInCartThis){
+            setLoadingMessage('');
+            addNotification(ingredient.name + ' already in cart');
+            return;
+        }
+
+        // Otherwise add the quantity
+        addQuantity = itemInCart.quantity;
+    }
+
+
     // Get the ingredient
     const priceInfo = prices.find((price) => price.productId === ingredient.id);
     const item = {
       productId: priceInfo.productId,
-      quantity: ingredient.amount.range ? (ingredient.amount.range[0] + ingredient.amount.range[1]) / 2 : ingredient.amount,
+      quantity: (ingredient.amount.range ? (ingredient.amount.range[0] + ingredient.amount.range[1]) / 2 : ingredient.amount) + addQuantity,
       sale_type: ingredient.unit == "ea" ? 'UNITS' : 'WEIGHT',
     };
 
@@ -318,7 +340,18 @@ export default function Page() {
 
     const response = await axios(config);
     console.log('Response: ', response.data);
+    setCart(response.data.products.length);
     setLoadingMessage('');
+    UpdateCart(response.data, recipe.id)
+
+    // Find the ingredient and update the inCart value
+    let updatedRecipe = {...recipe};
+    for (let i = 0; i < updatedRecipe.ingredients.length; i++) {
+        if(updatedRecipe.ingredients[i].id === ingredient.id){
+            updatedRecipe.ingredients[i].inCart = true;
+        }
+    }
+    setRecipe(updatedRecipe);
 
     if(!mass){
       addNotification(ingredient.name + ' added to cart');
@@ -384,7 +417,7 @@ export default function Page() {
 
       {/* Primary Page Layout */}
       <div className="bg-primary-black overflow-hidden">
-        <Navbar/>
+        <Navbar itemAmount={cart}/>
         <div className="relative">
           <section className={`${styles.paddings} relative z-10`}>
             <motion.div
@@ -420,8 +453,8 @@ export default function Page() {
                         title={item.name}
                         subtitle={printPrice(item) + " | " + printServings(item)}
                         imgUrl={`https://a.fsimg.co.nz/product/retail/fan/image/400x400/${item.id.split('-')[0]}.png`}
-                        clickCallBack={() => addToCart(item)
-                        }
+                        clickCallBack={() => addToCart(item)}
+                        alreadyInCart={item.inCart}
                     />
                 ))}
               </div>

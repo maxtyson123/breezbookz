@@ -13,6 +13,7 @@ export default function Page() {
     const [returnUrl, setReturnUrl] = useState(null);
     const [notifications, setNotifications] = useState([]);
 
+
     // Get the return URL from the query string
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

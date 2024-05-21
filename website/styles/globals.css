@@ -130,6 +130,7 @@
   margin: auto;
   position: relative;
   z-index: 12;
+  pointer-events: none;
 }
 
 ul,
@@ -166,6 +167,7 @@ li {
   background: #94C47D;
   border-radius: 0.5rem;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 
@@ -228,7 +230,12 @@ li > span {
   z-index: 13;
   top: 0;
   right: 0;
-  background-color: #94C47D;
+  background: linear-gradient(
+          97.86deg,
+          #94C47D 0%,
+          #477534 53.65%,
+          #225011 100%
+  );
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
