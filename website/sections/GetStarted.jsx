@@ -21,17 +21,18 @@ const GetStarted = () => (
         className={`flex-1 ${styles.flexCenter}`}
       >
         <img
-          src="/BB.png"
+          src="/paknsave.webp"
           alt="get-started"
-          className="w-[60%] h-[60%] object-contain"
+          className="w-[90%] h-[80%] object-contain"
+          style={{marginRight: '30%'}}
         />
       </motion.div>
       <motion.div
         variants={fadeIn('left', 'tween', 0.2, 1)}
         className="flex-[0.75] flex justify-center flex-col"
       >
-        <TypingText title="| Our Goals" />
-        <TitleText title={<>Strive For Success</>} />
+        <TypingText title="| Our Sponsor" />
+        <TitleText title={<>Pak N Save</>} />
         <div className="mt-[31px] flex flex-col max-w-[370px] gap-[24px]">
           {startingFeatures.map((feature, index) => (
             <StartSteps

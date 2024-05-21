@@ -140,6 +140,7 @@ export default function Page() {
     setLoadingMessage('');
     UpdateCart(Rresponse.data, -1)
     setCart(await GetCart());
+    addNotification('Item removed from cart', 'success');
   };
 
   // @ts-ignore
@@ -212,6 +213,13 @@ export default function Page() {
                 </button>
               </motion.div>
               <div className="mt-[50px] flex flex-col gap-[30px]">
+                {cart.products?.length === 0 && <InsightCard
+                    title="Your cart is empty"
+                    subtitle="Add items to your cart to see them here"
+                    imgUrl="/Logo White Transparent.png"
+                    clickCallBack={() => {}}
+                    alreadyInCart={false}
+                />}
                 {cart?.products?.map((item, index) => (
                     <InsightCard
                         key={`insight-${index}`}

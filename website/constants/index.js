@@ -27,9 +27,9 @@ export const exploreWorlds = [
 ];
 
 export const startingFeatures = [
-  'Goal 1',
-  'Goal 2',
-  'Goal 3',
+  'Low Prices',
+  'Local',
+  'Fresh',
 ];
 
 export const newFeatures = [

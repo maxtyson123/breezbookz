@@ -31,7 +31,7 @@ const InsightCard = ({ imgUrl, title, subtitle, index, clickCallBack, alreadyInC
         onClick={clickCallBack}
       >
         <img
-          src={alreadyInCart ? "/tick.svg" : isCart ? "/delte.svg" : "/arrow.svg"}
+          src={alreadyInCart ? "/tick.svg" : isCart ? "/delte.svg" : "/cart.svg"}
           alt="arrow"
           className="w-[40%] h-[40%] object-contain"
 
