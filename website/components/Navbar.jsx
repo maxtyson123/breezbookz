@@ -43,7 +43,7 @@ function Navbar({ itemAmount = 0 } ) {
               <div
                   className={`${styles.innerWidth} mx-auto flex justify-between gap-8`}
               >
-                  <div className="cursor-pointer">
+                  <Link className="cursor-pointer" href={"/cart"}>
                       <img
                           src="/cart-head.svg"
                           alt="search"
@@ -54,7 +54,7 @@ function Navbar({ itemAmount = 0 } ) {
                             className="font-bold text-[22px] leading-[25.28px] text-white">
                           {cartItems}
                       </h3>
-                  </div>
+                  </Link>
 
                   <h2 className="font-extrabold text-[24px] leading-[30.24px] text-white">
                       The Hungry Scholars Survival Handbook

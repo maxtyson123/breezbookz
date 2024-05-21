@@ -134,7 +134,7 @@ export default function Page() {
                             <input id="email" type="email" placeholder="Email" className="p-4 border border-white bg-transparent text-white w-[400px]" style={{borderBottom : '1px solid white'}}/>
                             <input id="password" type="password" placeholder="Password"
                                    className="p-4 border border-white bg-transparent text-white" style={{borderBottom : '1px solid white'}}/>
-                            <button className="p-4 bg-white text-primary-black font-bold hover:bg-primary-black hover:text-white transition-all" onClick={login}>Login</button>
+                            <button className="p-4 text-primary-black font-bold hover:bg-primary-black hover:text-white transition-all" onClick={login} style={{background: "#94C47D"}}>Login</button>
                         </div>
                     </section>
                     <div className="gradient-04 z-0"/>

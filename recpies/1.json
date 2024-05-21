@@ -5,37 +5,31 @@
   "ingredients": [
     {
       "id": "5104350-KGM-000",
-      "name": "Beef Mince",
       "amount": {"range":  [750, 1000]},
       "unit": "g"
     },
     {
       "id": "5045849-KGM-000",
-      "name": "Potatoes",
       "amount": {"range":  [3, 5]},
       "unit": "ea"
     },
     {
       "id": "5005953-EA-000",
-      "name": "Diced Tomatoes",
       "amount": 2,
       "unit": "ea"
     },
     {
       "id": "5086575-EA-000",
-      "name": "Maggi Cottage Pie Recipe Base",
       "amount": 2,
       "unit": "ea"
     },
     {
       "id": "5001949-EA-000",
-      "name": "Baked Beans",
       "amount": 1,
       "unit": "ea"
     },
     {
       "id": "5045856-KGM-000",
-      "name": "Onion",
       "amount": 1,
       "unit": "ea"
     }

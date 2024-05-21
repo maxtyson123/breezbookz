@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { fadeIn } from '../utils/motion';
 
-const InsightCard = ({ imgUrl, title, subtitle, index, clickCallBack, alreadyInCart }) => (
+const InsightCard = ({ imgUrl, title, subtitle, index, clickCallBack, alreadyInCart, isCart }) => (
   <motion.div
     variants={fadeIn('up', 'spring', index * 0.5, 1)}
     className="flex md:flex-row flex-col gap-4"
@@ -31,7 +31,7 @@ const InsightCard = ({ imgUrl, title, subtitle, index, clickCallBack, alreadyInC
         onClick={clickCallBack}
       >
         <img
-          src={alreadyInCart ? "/tick.svg" : "/cart.svg"}
+          src={alreadyInCart ? "/tick.svg" : isCart ? "/delte.svg" : "/arrow.svg"}
           alt="arrow"
           className="w-[40%] h-[40%] object-contain"
 

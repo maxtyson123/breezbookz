@@ -10,7 +10,7 @@ import {motion} from "framer-motion";
 import {fadeIn, staggerContainer} from "../../utils/motion";
 import {insights} from "../../constants";
 import {NotificationContainer, Notification} from "../../components/Notification";
-import {CheckCartInCart, CheckInCart, GetCart, UpdateCart} from "../../constants/cart";
+import {CheckInCart, GetCart, UpdateCart} from "../../constants/cart";
 
 
 export default function Page() {
@@ -69,8 +69,8 @@ export default function Page() {
 
     // Fetch the recipe data
     setLoadingMessage('Fetching Recipe Data...');
-    let recipeData = await fetch(`/data/recpies/${id}.json`);
-    recipeData = await recipeData.json();
+    let recipeData: any = await fetch(`/data/recpies/${id}.json`);
+    recipeData = await recipeData.json()
     recipeData.id = id;
 
     // Store if the item is in the cart or not
@@ -78,7 +78,6 @@ export default function Page() {
         recipeData.ingredients[i].inCart =  await CheckInCart(recipeData.ingredients[i].id, recipeData.id);
       }
 
-    setRecipe(recipeData);
     console.log('Recipe: ', recipeData);
 
     // Log the user in
@@ -117,6 +116,14 @@ export default function Page() {
     const apiPrices = response.data.products;
     setPrices(apiPrices);
     console.log('Prices: ', apiPrices);
+
+    // Go through the prices and set the name
+    for (let i = 0; i < recipeData.ingredients.length; i++) {
+      const priceInfo = apiPrices.find((price) => price.productId === recipeData.ingredients[i].id);
+      recipeData.ingredients[i].name = priceInfo.name;
+    }
+
+    setRecipe(recipeData);
 
     // Set the store
     setLoadingMessage('Storing Cart...');
@@ -455,6 +462,7 @@ export default function Page() {
                         imgUrl={`https://a.fsimg.co.nz/product/retail/fan/image/400x400/${item.id.split('-')[0]}.png`}
                         clickCallBack={() => addToCart(item)}
                         alreadyInCart={item.inCart}
+                        isCart={false}
                     />
                 ))}
               </div>
