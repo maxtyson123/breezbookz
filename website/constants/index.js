@@ -72,17 +72,27 @@ export const socials = [
   {
     name: 'twitter',
     url: '/twitter.svg',
+    link: 'https://twitter.com/breezbookz',
   },
   {
     name: 'linkedin',
     url: '/linkedin.svg',
+    link: 'https://www.linkedin.com/company/breezbookz',
   },
   {
     name: 'instagram',
     url: '/instagram.svg',
+    link: 'https://www.instagram.com/breezbookz/',
   },
   {
     name: 'facebook',
     url: '/facebook.svg',
+    link: 'https://www.facebook.com/breezbookz',
   },
 ];
+
+
+const shopemail = 'sales@breezbookz.shop';
+const subject = 'Order Inquiry';
+const body = 'Hello, I am interested in purchasing a copy of your book.';
+export const mailtolink = `mailto:${shopemail}?subject=${subject}&body=${body}`;

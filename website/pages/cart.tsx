@@ -1,16 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
-import Link from 'next/link';
 import styles from '../styles';
 import {Footer, InsightCard, Navbar, TitleText, TypingText} from "../components";
-import {About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew} from "../sections";
 import {motion} from "framer-motion";
 import {fadeIn, staggerContainer} from "../utils/motion";
-import {insights} from "../constants";
 import {NotificationContainer, Notification} from "../components/Notification";
-import {CheckInCart, GetCart, UpdateCart} from "../constants/cart";
+import { GetCart, RemoveFromLocalStorageCart} from "../constants/cart";
 
 
 export default function Page() {
@@ -64,9 +60,6 @@ export default function Page() {
   }
 
   const buyItem = async (item) => {
-
-    // Clear the cart
-    localStorage.removeItem('cartItems');
 
     // Open the PaknSave website
     window.open('https://www.paknsave.co.nz/shop/shopping-cart', '_blank');
@@ -138,7 +131,10 @@ export default function Page() {
     const Rresponse = await axios(Rconfig);
     console.log('Response: ', Rresponse.data);
     setLoadingMessage('');
-    UpdateCart(Rresponse.data, -1)
+
+    // Remove the item from the cart
+    RemoveFromLocalStorageCart(item.productId);
+
     setCart(await GetCart());
     addNotification('Item removed from cart', 'success');
   };

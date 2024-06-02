@@ -7,6 +7,7 @@ import { navVariants } from '../utils/motion';
 import {useEffect, useState} from "react";
 import Link from "next/link";
 import {GetCart} from "../constants/cart";
+import {mailtolink} from "../constants";
 
 function Navbar({ itemAmount = 0 } ) {
 
@@ -51,7 +52,7 @@ function Navbar({ itemAmount = 0 } ) {
                       />
                       <h3
                             style={{position: "relative", top: "-65%", left: "20%", backgroundColor: "#94C47D", borderRadius: "50%", padding: "0.5rem 1rem", scale: "0.55"}}
-                            className="font-bold text-[22px] leading-[25.28px] text-white">
+                            className="font-bold text-[22px] leading-[25.28px] text-white" >
                           {cartItems}
                       </h3>
                   </Link>
@@ -71,7 +72,7 @@ function Navbar({ itemAmount = 0 } ) {
           <div className={`sidenav ${navOpen ? 'open' : ''}`}>
               <a href="javascript:void(0)" className="closebtn" onClick={() => setNavOpen(false)}>&times;</a>
               <Link href="/">Home</Link>
-              <Link href="/buy">Buy Our Book</Link>
+              <Link href={mailtolink}>Buy Our Book</Link>
               <Link href="/cart">Cart</Link>
               <Link href="/login">Login</Link>
           </div>

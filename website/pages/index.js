@@ -4,9 +4,6 @@ import { About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew } from '
 
 
 // TODO:
-// 1. Recpie Cart Link
-// 2. Sponsor Section
-// 3. Buy Book Option
 // 4. Museum
 // 5. Mobile Responsiveness
 
