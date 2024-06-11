@@ -1,6 +1,8 @@
 import json
 import time
+import matplotlib.pyplot as plt
 
+MAX_WEBSITE_TIME_MILI = 114180012
 
 
 def makeJson():
@@ -55,6 +57,9 @@ def makeJson():
         # Add the data to the new JSON data
         newJsonData.append(data)
 
+
+
+
     # Save to a nicely indented JSON file
     with open('revisions.json', 'w') as f:
         json.dump(newJsonData, f, indent=4)
@@ -101,6 +106,68 @@ def calcFileTimes(jd):
 
         # Save the combined times to the file
         file["combined_times"] = combined_times
+
+    # Add the website time to the JSON data
+    jd.append({
+        "name": "Website",
+        "revisions": [],
+        "usermap": {},
+        "combined_times": [{
+            "start": 0,
+            "end": MAX_WEBSITE_TIME_MILI,
+            "length": MAX_WEBSITE_TIME_MILI,
+            "date": time.ctime(0),
+            "users": [
+                "Max Tyson",
+            ],
+        }]
+    })
+
+    # Add the cooking recipe time to the JSON data
+    RECIPES_TIME_MILI_PER = 3000000
+    COBY_DONE = 27
+    MAX_DONE = 3
+
+    jd.append({
+        "name": "Cooking Recipes",
+        "revisions": [],
+        "usermap": {},
+        "combined_times": [{
+            "start": 0,
+            "end": RECIPES_TIME_MILI_PER * COBY_DONE,
+            "length": RECIPES_TIME_MILI_PER * COBY_DONE,
+            "date": time.ctime(0),
+            "users": [
+                "Coby Jones",
+            ],
+        }, {
+            "start": 0,
+            "end": RECIPES_TIME_MILI_PER * MAX_DONE,
+            "length": RECIPES_TIME_MILI_PER * MAX_DONE,
+            "date": time.ctime(0),
+            "users": [
+                "Max Tyson",
+            ],
+        }]
+    })
+
+    # Designing the book
+    BOOK_TIME_MILI = 72000000
+    jd.append({
+        "name": "Designing the Book",
+        "revisions": [],
+        "usermap": {},
+        "combined_times": [{
+            "start": 0,
+            "end": BOOK_TIME_MILI,
+            "length": BOOK_TIME_MILI,
+            "date": time.ctime(0),
+            "users": [
+                "Max Tyson",
+            ],
+        }]
+    })
+
 
     return jd
 
@@ -155,6 +222,26 @@ def printTotals(jd):
 
     for user in total_user_time:
         print(f"{user}: {printTime(total_user_time[user])}, {total_user_time[user] / total_time * 100:.2f}%")
+
+    # Remove users with less than 1% of the total
+    total_user_time = {k: v for k, v in total_user_time.items() if v / total_time > 0.01}
+
+    # defining labels
+    names = [user for user in total_user_time]
+
+    # portion covered by each label
+    slices = [total_user_time[user] for user in total_user_time]
+
+    # color for each label
+    colors = ['r', 'y', 'g', 'b']
+
+    # plotting the pie chart
+    plt.pie(slices, labels = names, colors=colors,
+            startangle=90, shadow = True,
+            radius = 1.2, autopct = '%1.1f%%')
+
+    # showing the plot
+    plt.show()
 
 def printIndividualUsers(jd):
 
