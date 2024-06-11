@@ -1,10 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { socials } from '../constants';
+import {mailtolink, socials} from '../constants';
 
 import styles from '../styles';
 import { footerVariants } from '../utils/motion';
+import Link from "next/link";
 
 const Footer = () => (
   <motion.footer
@@ -19,7 +20,7 @@ const Footer = () => (
         <h4 className="font-bold md:text-[64px] text-[44px] text-white">
           Get yours today!
         </h4>
-        <button type="button" className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">
+        <Link href={mailtolink} className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">
           <img
             src="/headset.svg"
             alt="headset"
@@ -28,7 +29,7 @@ const Footer = () => (
           <span className="font-normal text-[16px] text-white">
             Order Now
           </span>
-        </button>
+        </Link>
       </div>
 
       <div className="flex flex-col">
@@ -44,12 +45,14 @@ const Footer = () => (
 
           <div className="flex gap-4">
             {socials.map((social) => (
-              <img
-                key={social.name}
-                src={social.url}
-                alt={social.name}
-                className="w-[24px] h-[24px] object-contain cursor-pointer"
-              />
+                <Link href={social.link} key={social.name}>
+                  <img
+                    key={social.name}
+                    src={social.url}
+                    alt={social.name}
+                    className="w-[24px] h-[24px] object-contain cursor-pointer"
+                  />
+                </Link>
             ))}
           </div>
         </div>

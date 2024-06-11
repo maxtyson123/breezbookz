@@ -2,19 +2,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import Link from 'next/link';
 import styles from '../../styles';
 import {Footer, InsightCard, Navbar, TitleText, TypingText} from "../../components";
-import {About, Explore, Feedback, GetStarted, Hero, Insights, WhatsNew} from "../../sections";
 import {motion} from "framer-motion";
 import {fadeIn, staggerContainer} from "../../utils/motion";
-import {insights} from "../../constants";
 import {NotificationContainer, Notification} from "../../components/Notification";
-import {CheckInCart, GetCart, UpdateCart} from "../../constants/cart";
+import {AddToLocalStorageCart, CheckLocalStorageCart, GetCart} from "../../constants/cart";
 
 
 export default function Page() {
-  const userURL = 'https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser';
   const cartURL = 'https://api-prod.newworld.co.nz/v1/edge/cart';
   const productURL = 'https://api-prod.newworld.co.nz/v1/edge/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919/decorateProducts';
   const router = useRouter();
@@ -75,7 +71,7 @@ export default function Page() {
 
     // Store if the item is in the cart or not
     for (let i = 0; i < recipeData.ingredients.length; i++) {
-        recipeData.ingredients[i].inCart =  await CheckInCart(recipeData.ingredients[i].id, recipeData.id);
+        recipeData.ingredients[i].inCart =  CheckLocalStorageCart(recipeData.ingredients[i].id, recipeData.id);
       }
 
     console.log('Recipe: ', recipeData);
@@ -308,8 +304,8 @@ export default function Page() {
     const itemInCart = currentCart.products.find((item) => item.productId === ingredient.id);
     let addQuantity = 0;
     if(itemInCart){
-        const itemInCartThis = itemInCart.recipeAmount.find((item) => item.recipeId === recipe.id);
-        if(itemInCartThis){
+
+        if(CheckLocalStorageCart(ingredient.id, recipe.id)){
             setLoadingMessage('');
             addNotification(ingredient.name + ' already in cart');
             return;
@@ -349,7 +345,10 @@ export default function Page() {
     console.log('Response: ', response.data);
     setCart(response.data.products.length);
     setLoadingMessage('');
-    UpdateCart(response.data, recipe.id)
+
+
+    // Update the local storage
+    AddToLocalStorageCart(ingredient.id, recipe.id);
 
     // Find the ingredient and update the inCart value
     let updatedRecipe = {...recipe};
