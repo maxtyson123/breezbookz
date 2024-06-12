@@ -217,9 +217,9 @@ export default function Page() {
                     title="Your cart is empty"
                     subtitle="Add items to your cart to see them here"
                     imgUrl="/Logo White Transparent.png"
-                    clickCallBack={() => {}}
-                    alreadyInCart={false}
-                />}
+                    clickCallBack={() => {
+                    }}
+                    alreadyInCart={false} index={undefined} isCart={undefined}                />}
                 {cart?.products?.map((item, index) => (
                     <InsightCard
                         key={`insight-${index}`}

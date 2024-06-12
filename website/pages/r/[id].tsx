@@ -43,23 +43,35 @@ export default function Page() {
   };
 
   const getKey = async (cookie) => {
-    const data = JSON.stringify({
-      idCookie: cookie,
+
+    console.log('Cookie', cookie);
+
+    let data = JSON.stringify({
+      "url": "https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser",
+      "type": "get",
+      // "cookies": [
+      //   {
+      //     "name": "SessionCookieIdV2",
+      //     "value": cookie,
+      //   },
+      // ],
     });
 
-    const config = {
+    let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: '/api/key',
+      url: '/api/bypass',
       headers: {
         'Content-Type': 'application/json',
       },
-      data,
+      data : data
     };
+
 
     // Get the cookies from the login
     const response = await axios(config);
-    return response.data.token;
+    console.log('Response: ', response.data);
+    return response.data.raw.access_token;
 
   }
 
@@ -75,8 +87,8 @@ export default function Page() {
 
     // Store if the item is in the cart or not
     for (let i = 0; i < recipeData.ingredients.length; i++) {
-        recipeData.ingredients[i].inCart =  await CheckInCart(recipeData.ingredients[i].id, recipeData.id);
-      }
+        recipeData.ingredients[i].inCart = false; // await CheckInCart(recipeData.ingredients[i].id, recipeData.id);
+    }
 
     console.log('Recipe: ', recipeData);
 
@@ -124,21 +136,6 @@ export default function Page() {
     }
 
     setRecipe(recipeData);
-
-    // Set the store
-    setLoadingMessage('Storing Cart...');
-    const store = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://api-prod.newworld.co.nz/v1/edge/cart/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-
-    // Get the cart
-    setLoadingMessage('Getting Cart...');
 
     // Clear the loading message
     setLoadingMessage("");

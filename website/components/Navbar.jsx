@@ -15,6 +15,8 @@ function Navbar({ itemAmount = 0 } ) {
 
   useEffect(() => {
 
+        return;
+
         // If the item amount is 0 fetch the cart items
         if (itemAmount > 0) {
             setCartItems(itemAmount);

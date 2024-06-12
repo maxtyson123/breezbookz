@@ -31,42 +31,53 @@ export default function Page() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        const data = JSON.stringify({
-            "email": email,
-            "password": password
+
+        let data = JSON.stringify({
+            "url": "https://www.paknsave.co.nz/CommonApi/Account/Login",
+            "type": "post",
+            "cookies": "",
+            "data": {
+                "email": email,
+                "password": password
+            }
         });
 
-
-        const config = {
+        let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: '/api/login',
+            url: '/api/bypass',
             headers: {
                 'Content-Type': 'application/json',
             },
-            data,
+            data : data
         };
 
         // Get the cookies from the login
         const response = await axios(config);
         console.log(response);
 
-        // Check if the login was successful
-        if (response.data.data.statusCode == 401) {
-            addNotification('ERROR: Invalid login credentials');
-            setLoadingMessage('');
-            return;
-        }
+        //TODO Check if the login was successful
+        // if (response.data.data.statusCode == 401) {
+        //     addNotification('ERROR: Invalid login credentials');
+        //     setLoadingMessage('');
+        //     return;
+        // }
 
         setLoadingMessage('Login successful');
 
-        const cookie =  response.data.cookie;
+        const cookies =  response.data.cookies;
 
-        const timeout = cookie.split(';')[1].split('=')[1];
-        const cdata = cookie.split(';')[0].split('=')[1];
+        // Loop through the cookies to find the session
+        for (let i = 0; i < cookies.length; i++) {
 
-        // Set the cookie
-        document.cookie = `SessionCookieIdV2=${cdata}; expires=${timeout}; Secure; SameSite=None`;
+            const cookie = cookies[i];
+
+            console.log(cookie)
+            if (cookie.name = 'SessionCookieIdV2') {
+
+                document.cookie = `SessionCookieIdV2=${cookie.value}; expires=${cookie.expiry}; Secure; SameSite=None`;
+            }
+        }
 
 
         // Redirect to the returnUrl

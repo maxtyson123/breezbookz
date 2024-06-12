@@ -8,20 +8,7 @@ export default async function handler(
 
     const {email, password} = request.body;
 
-    let data = JSON.stringify({
-        "email": email,
-        "password": password
-    });
 
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'https://www.paknsave.co.nz/CommonApi/Account/Login',
-        headers: {
-            'Content-Type': 'application/json',
-       },
-        data : data
-    };
 
 
     const apiRessy = await axios.request(config)
