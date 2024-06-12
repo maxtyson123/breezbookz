@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import styles from '../styles';
 import { slideIn, staggerContainer, textVariant } from '../utils/motion';
 import book from '../styles/book.module.css';
+import {mailtolink} from "../constants";
+import Link from "next/link";
 
 const Hero = () => (
   <section className={`${styles.yPaddings} sm:pl-16 pl-6`}>
@@ -64,7 +66,7 @@ const Hero = () => (
           </div>
         </div>
 
-        <a href="#explore">
+        <Link href={mailtolink}>
           <div className="w-full flex justify-end sm:-mt-[70px] -mt-[50px] pr-[40px] relative left-12">
             <img
               src="/stamp.png"
@@ -72,7 +74,7 @@ const Hero = () => (
               className="sm:w-[255px] w-[200px] sm:h-[255px] h-[200px] object-contain"
             />
           </div>
-        </a>
+        </Link>
       </motion.div>
     </motion.div>
   </section>

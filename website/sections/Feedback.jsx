@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 
 import styles from '../styles';
 import { fadeIn, staggerContainer, zoomIn } from '../utils/motion';
+import Link from "next/link";
+import {mailtolink} from "../constants";
 
 const Feedback = () => (
   <section className={`${styles.paddings}`}>
@@ -47,11 +49,13 @@ const Feedback = () => (
           variants={zoomIn(0.4, 1)}
           className="lg:block hidden absolute -left-[15%] top-[3%]"
         >
-          <img
-            src="/stamp.png"
-            alt="stamp"
-            className="w-[255px] h-[255px] object-contain"
-          />
+          <Link href={mailtolink}>
+            <img
+              src="/stamp.png"
+              alt="stamp"
+              className="w-[255px] h-[255px] object-contain"
+            />
+          </Link>
         </motion.div>
       </motion.div>
     </motion.div>
