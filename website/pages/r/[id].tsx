@@ -395,7 +395,7 @@ export default function Page() {
     console.log('Response: ', response.data);
     setCart(response.data.products.length);
     setLoadingMessage('');
-    UpdateCart(response.data, recipe.id)
+    // UpdateCart(response.data, recipe.id)
 
     // Find the ingredient and update the inCart value
     let updatedRecipe = {...recipe};
