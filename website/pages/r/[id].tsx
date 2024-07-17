@@ -49,7 +49,6 @@ export default function Page() {
     // Get the cookies from the login
     let response;
     response = await axios.get('/api/getuser');
-    response = await axios.get('/api/getuser');
     console.log('Response: ', response.data);
 
     let token;

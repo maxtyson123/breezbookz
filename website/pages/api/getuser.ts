@@ -25,20 +25,24 @@ export default async function handler(
     // Create a new Humanoid instance
     const Humanoid = require("humanoid-js");
     let humanoid = new Humanoid(false);
+
     await humanoid.get("https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser")
-        .then(res => {
+        .then(async res => {
                 console.log(res.statusCode) // 503
                 console.log(res.isSessionChallenged) // true
-                humanoid.bypassJSChallenge(res)
-                    .then(challengeResponse => {
-                        // Note that challengeResponse.isChallengeSolved won't be set to true when doing manual bypassing.
-                       console.log(challengeResponse.body) // <!DOCTYPE html><html lang="en">...
-                    })
+
+                try {
+                    const x = await humanoid.bypassJSChallenge(res)
+                } catch (e) {
+                    console.log("========e=========");
+                }
             }
         )
         .catch(err => {
             console.error(err)
         });
+
+
 
 
     response.status(200).json(await humanoid.get("https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser"));
