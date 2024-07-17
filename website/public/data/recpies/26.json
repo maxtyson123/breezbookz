@@ -1,0 +1,60 @@
+{
+  "name": "Chicken Alfredo",
+  "ingredients": [
+    {
+      "id": "5238243-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5105651-KGM-000",
+      "amount": "600",
+      "unit": "g"
+    },
+    {
+      "id": "5026195-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5265501-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5012042-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5026169-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5201479-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5027107-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5013767-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5026169-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5223140-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

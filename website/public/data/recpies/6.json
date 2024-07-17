@@ -1,0 +1,50 @@
+{
+  "name": "Chicken Cherry Pasta ",
+  "ingredients": [
+    {
+      "id": "5039965-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039973-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5319766-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5105651-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5028852-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5026195-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5026169-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5013965-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5040464-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

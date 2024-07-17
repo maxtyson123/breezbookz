@@ -26,7 +26,7 @@ const Hero = () => (
           variants={textVariant(1.2)}
           className="flex flex-row justify-center items-center"
         >
-          <h1 className={styles.heroSubHeading} style={{ width: '100vw' }}><TypingText /><span id="carat">|</span></h1>
+          <h1 className={styles.heroSubHeading + " " + book.textTyper} style={{ width: '100vw' }}><TypingText /><span id="carat">|</span></h1>
         </motion.div>
       </div>
 

@@ -1,0 +1,40 @@
+{
+  "name": "Basic Vegetarian Nachos",
+  "ingredients": [
+    {
+      "id": "5223140-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5046145-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5026177-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5012042-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5038667-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5020306-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5038284-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

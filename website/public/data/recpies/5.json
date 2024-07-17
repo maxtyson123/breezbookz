@@ -1,0 +1,46 @@
+
+{
+  "name": "Burgers",
+  "ingredients": [
+    {
+      "id": "5104350-KGM-000",
+      "amount": "1000",
+      "unit": "g"
+    },
+    {
+      "id": "5045849-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5045856-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5268694-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5040098-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5047010-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5223140-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5220069-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

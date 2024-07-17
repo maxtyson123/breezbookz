@@ -1,0 +1,35 @@
+{
+  "name": "Chocolate Chip Biscuits",
+  "ingredients": [
+    {
+      "id": "5023660-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5003885-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5324706-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039354-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5003829-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5004770-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

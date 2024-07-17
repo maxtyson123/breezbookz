@@ -1,0 +1,50 @@
+{
+  "name": "Spaghetti Bolognaise",
+  "ingredients": [
+    {
+      "id": "5045856-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5104350-KGM-000",
+      "amount": "800",
+      "unit": "grams"
+    },
+    {
+      "id": "5319769-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5290698-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039965-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039970-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5038667-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5020306-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5001949-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

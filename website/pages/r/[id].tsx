@@ -10,7 +10,7 @@ import {motion} from "framer-motion";
 import {fadeIn, staggerContainer} from "../../utils/motion";
 import {insights} from "../../constants";
 import {NotificationContainer, Notification} from "../../components/Notification";
-import {CheckInCart, GetCart, UpdateCart} from "../../constants/cart";
+import { GetCart} from "../../constants/cart";
 
 
 export default function Page() {
@@ -44,34 +44,23 @@ export default function Page() {
 
   const getKey = async (cookie) => {
 
-    console.log('Cookie', cookie);
-
-    let data = JSON.stringify({
-      "url": "https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser",
-      "type": "get",
-      // "cookies": [
-      //   {
-      //     "name": "SessionCookieIdV2",
-      //     "value": cookie,
-      //   },
-      // ],
-    });
-
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: '/api/bypass',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data : data
-    };
 
 
     // Get the cookies from the login
-    const response = await axios(config);
+    let response;
+    response = await axios.get('/api/getuser');
+    response = await axios.get('/api/getuser');
     console.log('Response: ', response.data);
-    return response.data.raw.access_token;
+
+    let token;
+
+    try{
+      token = JSON.parse(response.data.body).access_token;
+    } catch (e) {
+      window.location.reload()
+    }
+
+    return token;
 
   }
 
@@ -92,14 +81,17 @@ export default function Page() {
 
     console.log('Recipe: ', recipeData);
 
+    // Set the title of tha page
+    document.title = recipeData.name + ' | The Hungry Scholars Survival Handbook';
+
     // Log the user in
-    setLoadingMessage('Logging User In...');
-    let cookie = await logUserIn();
-    console.log('Cookie: ', cookie);
-    addNotification('Logged in successfully');
+    // setLoadingMessage('Logging User In...');
+    // let cookie = await logUserIn();
+    // console.log('Cookie: ', cookie);
+    // addNotification('Logged in successfully');
 
     // Get the access token
-    const token = await getKey(cookie);
+    const token = await getKey("cookie");
     console.log('Token: ', token);
     setAccessToken(token);
 
@@ -167,6 +159,11 @@ export default function Page() {
     // If the price information is not found, return
     if (!priceInfo) {
       return [-1, 'Price not found', ''];
+    }
+
+    // Check if product id is the only key in the object
+    if (Object.keys(priceInfo).length === 1) {
+      return [-1, 'Item Unavailable', ''];
     }
 
     // Calculate the price
@@ -245,21 +242,69 @@ export default function Page() {
       return price;
     }
 
+
+
     // If it is an ea unit, return the amount
-    if (unit === 'ea' && prices) {
+    if (unit === 'EA' && prices) {
       // If there is no vairable weight, return the amount
       const priceInfo = prices.find((pricei) => pricei.productId === ingredient.id);
+
+
+
       if (priceInfo.variableWeight) {
         amount *= priceInfo.variableWeight.averageWeight;
         unit = 'g';
       } else {
-        amount *= priceInfo.displayName.split('g')[0];
-        unit = 'g';
+
+        // Check if there is a 'x' in the display name
+        if(priceInfo.displayName.includes('x')){
+
+          // Get the multiple (first number)
+          const multiple = parseFloat(priceInfo.displayName.split('x')[0]);
+            amount *= multiple;
+
+
+        }
+
+        const matches = priceInfo.displayName.match(/(\d+)(pk|kg|g|ml)/);
+        if (matches) {
+          const quantity = parseFloat(matches[1]);
+          const unitType = matches[2];
+          unit = unitType
+
+          switch (unitType) {
+            case 'pk':
+              amount *= quantity;
+              break;
+
+            case 'kg':
+              amount *= quantity * 1000; // Convert kg to g
+              unit = 'g';
+              break;
+
+            case 'g':
+              amount *= quantity;
+              break;
+
+            case 'ml':
+              amount *= quantity;
+              break;
+
+            default:
+              // Handle unknown unit types if necessary
+              console.error('Unknown unit type:', unitType);
+          }
+        } else {
+          // Handle cases where displayName does not match the expected pattern
+          console.error('Invalid displayName format:', priceInfo);
+          return [priceInfo.singlePrice.price, amount, unit];
+        }
       }
     }
 
     // Convert the amount to desired unit
     amount = convertUnit(amount, unit, price[2]);
+    unit = price[2];
 
     // Calculate the price per serving
     // @ts-ignore
@@ -295,6 +340,10 @@ export default function Page() {
   };
 
   const addToCart = async (ingredient, mass = false) => {
+
+    // For now open the pak n save page
+    window.open('https://www.paknsave.co.nz/shop/product/' + ingredient.id, '_blank');
+    return
 
     setLoadingMessage('Adding ' + ingredient.name  +' to Cart...');
 

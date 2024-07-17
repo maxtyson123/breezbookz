@@ -1,0 +1,35 @@
+{
+  "name": "Bacon and Egg Pie",
+  "ingredients": [
+    {
+      "id": "5225595-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039354-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039956-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5033922-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5025497-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5045856-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

@@ -19,10 +19,11 @@ def makeJson():
         data = {
             "name": file.split("_file_name-")[1],
             "revisions": [],
-            "usermap": {},
+            "usermap": {}
         }
 
         # Go through each revision in the file
+        prev_endMillis = None
         for revision in jsonData[file]:
 
             # Get the revision
@@ -30,7 +31,6 @@ def makeJson():
 
             # Go through each revision and add it to the data
             for r in rev['tileInfo']:
-
 
                 # For each user in the revision, replace the user with the user's name
                 for i in range(len(r['users'])):
@@ -45,6 +45,7 @@ def makeJson():
                 data["revisions"][-1].pop('expandable', None)
                 data["revisions"][-1].pop('revisionMac', None)
 
+
             # Add the revision user map
             for user in rev['userMap']:
                 data["usermap"][user] = rev['userMap'][user]
@@ -56,8 +57,6 @@ def makeJson():
 
         # Add the data to the new JSON data
         newJsonData.append(data)
-
-
 
 
     # Save to a nicely indented JSON file
@@ -254,6 +253,7 @@ def printIndividualUsers(jd):
 
         total_user_time = {}
         total_time = 1
+
 
         # Print the file name
         print(f" - File: {file['name']}")

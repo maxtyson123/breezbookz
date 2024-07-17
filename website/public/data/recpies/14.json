@@ -1,0 +1,30 @@
+{
+  "name": "Basic Brownie",
+  "ingredients": [
+    {
+      "id": "5003829-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5003885-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5007274-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5023660-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5039354-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}
