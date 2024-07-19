@@ -1,0 +1,60 @@
+{
+  "name": "Mac & Cheese",
+  "ingredients": [
+    {
+      "id": "5003829-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5026169-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5046207-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5003664-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5105651-KGM-000",
+      "amount": "700",
+      "unit": "g"
+    },
+    {
+      "id": "5039354-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5009782-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5201479-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5268694-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5023660-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5002635-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}

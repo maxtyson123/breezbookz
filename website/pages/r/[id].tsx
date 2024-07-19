@@ -19,6 +19,8 @@ export default function Page() {
   const productURL = 'https://api-prod.newworld.co.nz/v1/edge/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919/decorateProducts';
   const router = useRouter();
 
+  const STATIC = true;
+
   const [recipe, setRecipe] = useState < any > (null);
   const [prices, setPrices] = useState < any > (null);
   const [accessToken, setAccessToken] = useState(null);
@@ -83,46 +85,62 @@ export default function Page() {
     // Set the title of tha page
     document.title = recipeData.name + ' | The Hungry Scholars Survival Handbook';
 
-    // Log the user in
-    // setLoadingMessage('Logging User In...');
-    // let cookie = await logUserIn();
-    // console.log('Cookie: ', cookie);
-    // addNotification('Logged in successfully');
 
-    // Get the access token
-    const token = await getKey("cookie");
-    console.log('Token: ', token);
-    setAccessToken(token);
+    let apiPrices = [];
 
-    // Create the array of product ids
-    // @ts-ignore
-    const productIds = recipeData.ingredients.map((ingredient) => ingredient.id);
+    // Get the static prices
+    if(STATIC){
+      setLoadingMessage('Fetching Price Data...');
+      let pricesDataStatic: any = await fetch(`/data/recpies/prices_store/${id}.json`);
+      pricesDataStatic = await pricesDataStatic.json()
 
-    const payload = JSON.stringify({
-      productIds,
-    });
+      apiPrices = pricesDataStatic.products;
 
-    const config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: productURL,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      data: payload,
-    };
+    }else{
+      // Log the user in
+      // setLoadingMessage('Logging User In...');
+      // let cookie = await logUserIn();
+      // console.log('Cookie: ', cookie);
+      // addNotification('Logged in successfully');
 
-    // Fetch the prices
-    setLoadingMessage('Fetching Prices...');
-    const response = await axios(config);
-    const apiPrices = response.data.products;
+      // Get the access token
+      const token = await getKey("cookie");
+      console.log('Token: ', token);
+      setAccessToken(token);
+
+      // Create the array of product ids
+      // @ts-ignore
+      const productIds = recipeData.ingredients.map((ingredient) => ingredient.id);
+
+      const payload = JSON.stringify({
+        productIds,
+      });
+
+      const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: productURL,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        data: payload,
+      };
+
+      // Fetch the prices
+      setLoadingMessage('Fetching Prices...');
+      const response = await axios(config);
+      apiPrices = response.data.products;
+
+    }
+
+
     setPrices(apiPrices);
     console.log('Prices: ', apiPrices);
 
     // Go through the prices and set the name
     for (let i = 0; i < recipeData.ingredients.length; i++) {
-      const priceInfo = apiPrices.find((price) => price.productId === recipeData.ingredients[i].id);
+      const priceInfo: any = apiPrices.find((price: any) => price.productId === recipeData.ingredients[i].id);
       recipeData.ingredients[i].name = priceInfo.name;
     }
 
@@ -483,20 +501,35 @@ export default function Page() {
             >
               <TitleText title={recipe?.name} textStyles="text-center"/>
               <TypingText title="| The Hungry Scholars Survival Handbook" textStyles="text-center"/>
-              <motion.div
-                  variants={fadeIn('up', 'spring', (0.1) * 0.5, 1)}
-                  className="flex justify-center mt-[50px] gap-[30px] w-full p-10"
-              >
-                <button onClick={addAllToCart} type="button"
-                        className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">
-                  <img
-                      src="/cart.svg"
-                      alt="headset"
-                      className="w-[24px] h-[24px] object-contain"
-                  />
-                  <span className="font-normal text-[16px] text-white"> Add All To Cart </span>
-                </button>
-              </motion.div>
+              {/*<motion.div*/}
+              {/*    variants={fadeIn('up', 'spring', (0.1) * 0.5, 1)}*/}
+              {/*    className="flex justify-center mt-[50px] gap-[30px] w-full p-10"*/}
+              {/*>*/}
+              {/*  <button onClick={addAllToCart} type="button"*/}
+              {/*          className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">*/}
+              {/*    <img*/}
+              {/*        src="/cart.svg"*/}
+              {/*        alt="headset"*/}
+              {/*        className="w-[24px] h-[24px] object-contain"*/}
+              {/*    />*/}
+              {/*    <span className="font-normal text-[16px] text-white"> Add All To Cart </span>*/}
+              {/*  </button>*/}
+              {/*</motion.div>*/}
+              <h1
+                style={
+                    {
+                        color: 'white',
+                        fontSize: '1.5rem',
+                        textAlign: 'center',
+                        marginBottom: '20px',
+                        fontWeight: 'normal',
+                        backgroundColor: 'rgba(0,0,0,0.9)',
+                        marginTop: '20px',
+                        padding: '20px',
+                        borderRadius: '10px',
+                    }
+                }
+              >Please note: prices may not be updated due to temporary inconveniences</h1>
               <div className="mt-[50px] flex flex-col gap-[30px]">
                 {recipe?.ingredients.map((item, index) => (
                     <InsightCard
@@ -511,20 +544,20 @@ export default function Page() {
                     />
                 ))}
               </div>
-              <motion.div
-                  variants={fadeIn('up', 'spring', (recipe?.ingredients.length + 1) * 0.5, 1)}
-                  className="flex justify-center mt-[50px] gap-[30px] w-full p-10"
-              >
-                <button onClick={addAllToCart} type="button"
-                        className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">
-                  <img
-                      src="/cart.svg"
-                      alt="headset"
-                      className="w-[24px] h-[24px] object-contain"
-                  />
-                  <span className="font-normal text-[16px] text-white"> Add All To Cart </span>
-                </button>
-              </motion.div>
+              {/*<motion.div*/}
+              {/*    variants={fadeIn('up', 'spring', (recipe?.ingredients.length + 1) * 0.5, 1)}*/}
+              {/*    className="flex justify-center mt-[50px] gap-[30px] w-full p-10"*/}
+              {/*>*/}
+              {/*  <button onClick={addAllToCart} type="button"*/}
+              {/*          className="flex items-center h-fit py-4 px-6 bg-[#94c47d] rounded-[32px] gap-[12px]">*/}
+              {/*    <img*/}
+              {/*        src="/cart.svg"*/}
+              {/*        alt="headset"*/}
+              {/*        className="w-[24px] h-[24px] object-contain"*/}
+              {/*    />*/}
+              {/*    <span className="font-normal text-[16px] text-white"> Add All To Cart </span>*/}
+              {/*  </button>*/}
+              {/*</motion.div>*/}
             </motion.div>
           </section>
           <div className="gradient-04 z-0"/>

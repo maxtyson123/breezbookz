@@ -1,18 +1,23 @@
 {
-  "name": "Basic Vegetarian Nachos",
+  "name": "Crispy Chicken Sandwich",
   "ingredients": [
     {
-      "id": "5223140-KGM-000",
+      "id": "5105651-KGM-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5046145-EA-000",
+      "id": "5281810-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5026177-EA-000",
+      "id": "5046477-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5004759-EA-000",
       "amount": "1",
       "unit": "EA"
     },
@@ -22,17 +27,17 @@
       "unit": "EA"
     },
     {
-      "id": "5038667-EA-000",
+      "id": "5026195-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5020306-EA-000",
+      "id": "5026169-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5038284-EA-000",
+      "id": "5040337-EA-000",
       "amount": "1",
       "unit": "EA"
     }

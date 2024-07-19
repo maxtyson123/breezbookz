@@ -1,38 +1,33 @@
 {
-  "name": "Basic Vegetarian Nachos",
+  "name": "Chocolate Chip Biscuits",
   "ingredients": [
     {
-      "id": "5223140-KGM-000",
+      "id": "5023660-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5046145-EA-000",
+      "id": "5003885-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5026177-EA-000",
+      "id": "5324706-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5012042-EA-000",
+      "id": "5039354-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5038667-EA-000",
+      "id": "5003829-EA-000",
       "amount": "1",
       "unit": "EA"
     },
     {
-      "id": "5020306-EA-000",
-      "amount": "1",
-      "unit": "EA"
-    },
-    {
-      "id": "5038284-EA-000",
+      "id": "5004770-EA-000",
       "amount": "1",
       "unit": "EA"
     }

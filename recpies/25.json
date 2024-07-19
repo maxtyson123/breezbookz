@@ -1,0 +1,50 @@
+{
+  "name": "Meatballs and Pasta",
+  "ingredients": [
+    {
+      "id": "5002515-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5104350-KGM-000",
+      "amount": "700",
+      "unit": "g"
+    },
+    {
+      "id": "5039354-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5045856-KGM-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5045921-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5008899-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5005953-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5201479-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    },
+    {
+      "id": "5028855-EA-000",
+      "amount": "1",
+      "unit": "EA"
+    }
+  ]
+}
