@@ -1,0 +1,30 @@
+{
+   "name":"Breakfast Hash",
+   "ingredients":[
+      {
+         "id":"5025497_EA_000",
+         "amount":"1",
+         "unit":"EA"
+      },
+      {
+         "id":"5045849_KGM_000",
+         "amount":"1",
+         "unit":"EA"
+      },
+      {
+         "id":"5045856_KGM_000",
+         "amount":"1",
+         "unit":"EA"
+      },
+      {
+         "id":"5313455_EA_000",
+         "amount":"1",
+         "unit":"EA"
+      },
+      {
+         "id":"5039354_EA_000",
+         "amount":"1",
+         "unit":"EA"
+      }
+   ]
+}

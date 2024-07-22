@@ -1,8 +1,6 @@
 import os
-import pyperclip
 import requests
 import json
-import subprocess
 
 # BUGS: Can bypass limit
 
@@ -16,17 +14,17 @@ print("=" * 40)
 # Get the auth
 print("Fetching user account...")
 user = input("Enter your access_token: ")
-
+PATH="../website/public/data/recpies"
 
 js = ""
 
 
 
 # Read all the json files in the folder
-for filename in os.listdir("../recpies"):
+for filename in os.listdir(PATH):
     if filename.endswith(".json"):
         print(f"    - Reading {filename}")
-        with open(f"../recpies/{filename}") as f:
+        with open(PATH + f"/{filename}") as f:
             data = json.load(f)
 
 
@@ -53,7 +51,7 @@ for filename in os.listdir("../recpies"):
             productData = response.json()
 
             # Save the data
-            with open(f"../recpies/prices_store/{filename}", "w") as f:
+            with open(PATH + f"/prices_store/{filename}", "w") as f:
                 json.dump(productData, f)
 
 

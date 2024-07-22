@@ -1,0 +1,35 @@
+{
+  "name": "Blueberry Muffin",
+  "ingredients": [
+    {
+      "id": "5310071_ea_000",
+      "amount": "1",
+      "unit": "ea"
+    },
+    {
+      "id": "5039354_ea_000",
+      "amount": "1",
+      "unit": "ea"
+    },
+    {
+      "id": "5023660_ea_000",
+      "amount": "1",
+      "unit": "ea"
+    },
+    {
+      "id": "5201479_ea_000",
+      "amount": "1",
+      "unit": "ea"
+    },
+    {
+      "id": "5003885_ea_000",
+      "amount": "1",
+      "unit": "ea"
+    },
+    {
+      "id": "5003829_ea_000",
+      "amount": "1",
+      "unit": "ea"
+    }
+  ]
+}
