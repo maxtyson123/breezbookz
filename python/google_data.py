@@ -1,16 +1,18 @@
+import io
 import json
+import os
+import re
 
 import pyperclip
-import requests
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
 
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly']
+SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 SERVICE_ACCOUNT_FILE = 'breez-bookz-b4c8f459fc68.json'
 
 # Authenticate using the service account file
-flow = InstalledAppFlow.from_client_secrets_file(
-    'a.json', SCOPES)
+flow = InstalledAppFlow.from_client_secrets_file('a.json', SCOPES)
 credentials = flow.run_local_server(port=0)
 
 # Build the Drive API service
@@ -21,10 +23,9 @@ token = 'AC4w5ViweY7dgnyY4TH3X7orTP3K6aMCMg:1718101352612'
 # Create js to store the responses
 js = ["a = {};"]
 
-marketing_mix = '19V9i5YCDo5-tja2KDfK-CbksvvmtdCFCOn4hibDxGs0'
 ROOTFOLDER = "1lbTfH1vS2nBaWLi3oL2vPVKLpzdUfqG5"
-def getrevisions(file_id, name):
 
+def getrevisions(file_id, name):
     # Setup a to contain the id
     name = name.replace(' ', '_').replace('.', '_').replace('(', '_').replace(')', '_').replace(')', '_').replace("'", "_")
     aID = f"file_id-{file_id}_file_name-{name}"
@@ -36,7 +37,6 @@ def getrevisions(file_id, name):
         items = revisions.get('items', [])
 
         if not items:
-            # print('No revisions found.')
             return
         else:
             for x in range(len(items)):
@@ -46,16 +46,8 @@ def getrevisions(file_id, name):
                 modified_by = item.get('lastModifyingUser', {}).get('displayName', 'Unknown')
                 email = item.get('lastModifyingUser', {}).get('emailAddress', 'Unknown')
 
-                # print(f"Revision ID: {revision_id}, "
-                #       f"Modified Time: {modified_time}, "
-                #       f"Modified By: {modified_by}, "
-                #       f"Email: {email}"
-                #       )
-
         start_id = 1
         end_id = items[-1]['id']
-
-        # print(f"Start ID: {start_id}, End ID: {end_id}")
 
         # Print the range of revisions (broken down into sets of 2000 as a max difference)
         current_id = start_id
@@ -66,51 +58,69 @@ def getrevisions(file_id, name):
 
             # Get the URL for the revision range
             url = f"https://docs.google.com/document/d/{file_id}/revisions/tiles?start={current_id}&end={next_id}&token={token}&showDetailedRevisions=true"
-            js[0] += f"a['{aID }'].push(await fetch('{url}').then(r => r.text()));"
-
-            # print(f"Range: {current_id} - {next_id}")
+            js[0] += f"a['{aID}'].push(await fetch('{url}').then(r => r.text()));"
             current_id = next_id
-
-
-
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def download(file_id, name):
+    try:
+        name = re.sub(r'[\\/*?:"<>|]', "", name)
+        file_ext = name.split('.')[-1].lower()
+
+        request = None
+
+        if file_ext in ['docx', 'pdf']:
+            if file_ext == 'docx':
+                request = service.files().export_media(fileId=file_id, mimeType='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            elif file_ext == 'pdf':
+                request = service.files().export_media(fileId=file_id, mimeType='application/pdf')
+        else:
+            return
+
+        if request:
+            file_path = os.path.join('output', name)
+            with io.FileIO(file_path, 'wb') as fh:
+                downloader = MediaIoBaseDownload(fh, request)
+                done = False
+                while done is False:
+                    status, done = downloader.next_chunk()
+                    print(f"\rDownload {name}: {int(status.progress() * 100)}%")
+
+    except Exception as e:
+        print(f"An error occurred while downloading {name}: {e}")
 
 def gatherFolder(folder_id, indent=0):
-
     # Query to get files in the specified folder
     query = f"'{folder_id}' in parents"
 
     # List files in the folder
     try:
-        results = service.files().list(
-            q=query,
-        ).execute()
+        results = service.files().list(q=query).execute()
         items = results.get('items', [])
 
         if not items:
-             print('No files found.')
+            print('No files found.')
         else:
             for item in items:
                 folder = 'application/vnd.google-apps.folder' in item['mimeType']
                 file = 'application/vnd.google-apps.document' in item['mimeType']
 
-
                 if folder:
                     print(f"{'-' * indent}Folder: {item['title']}")
-                    gatherFolder(item['id'] , indent + 1)
+                    gatherFolder(item['id'], indent + 1)
 
                 if file:
                     print(f"{'-' * indent}File: {item['title']}")
-                    getrevisions(item['id'], item['title'])
+                    download(item['id'], item['title'] + ".docx")
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
-
 def main():
+    # Create the output folder
+    os.makedirs('output', exist_ok=True)
 
     gatherFolder(ROOTFOLDER)
 
@@ -120,7 +130,6 @@ def main():
     # Copy the js to the clipboard
     pyperclip.copy(js[0])
     print("DONE!!!")
-
 
 if __name__ == "__main__":
     main()
