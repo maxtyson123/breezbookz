@@ -31,7 +31,7 @@ const Feedback = () => (
         </div>
 
         <p className="mt-[24px] font-normal sm:text-[24px] text-[18px] sm:leading-[45.6px] leading-[39.6px] text-white">
-          "Some Yap About the product being good yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap  "
+          "BreezBookz has been a lifesaver for me as a student. I love how the meals are quick to prepare, yet still healthy and delicious. Plus, the portions are ideal for leftovers, saving both time and money. If you’re a student looking for easy, budget-friendly meal ideas, BreezBookz is definitely worth it."
         </p>
       </motion.div>
 
@@ -40,7 +40,7 @@ const Feedback = () => (
         className="relative flex-1 flex justify-center items-center"
       >
         <img
-          src="/planet-09.png"
+          src="/IMG_1857.png"
           alt="planet-09"
           className="w-full lg:h-[610px] h-auto min-h-[210px] object-cover rounded-[40px]"
         />

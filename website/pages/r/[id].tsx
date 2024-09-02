@@ -11,7 +11,7 @@ import {fadeIn, staggerContainer} from "../../utils/motion";
 import {insights} from "../../constants";
 import {NotificationContainer, Notification} from "../../components/Notification";
 import { GetCart} from "../../constants/cart";
-
+import { fetchFrame } from "node-iframe";
 
 export default function Page() {
   const userURL = 'https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser';
@@ -19,7 +19,7 @@ export default function Page() {
   const productURL = 'https://api-prod.newworld.co.nz/v1/edge/store/529d66cc-60e3-432e-b8d1-efc9f2ec4919/decorateProducts';
   const router = useRouter();
 
-  const STATIC = true;
+  const STATIC = false;
 
   const [recipe, setRecipe] = useState < any > (null);
   const [prices, setPrices] = useState < any > (null);
@@ -31,6 +31,11 @@ export default function Page() {
 
   // Notifications state
   const [notifications, setNotifications] = useState<any>([]);
+
+
+  async function fetchIframe() {
+    return await fetchFrame({ url: "https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser", safeMode: false });
+  }
 
   const logUserIn = async () => {
 
@@ -46,28 +51,42 @@ export default function Page() {
 
   const getKey = async (cookie) => {
 
+    // IFRAME WORK AROUND
+    const response = await fetchIframe();
+
+    // Get the json inside the body tag
+    const body = response.split('<body>')[1].split('</body>')[0];
+    const json = JSON.parse(body);
+
+    console.log('Response: ', json);
+    return json.access_token;
 
 
-    // Get the cookies from the login
-    let response;
-    response = await axios.get('/api/getuser');
-    console.log('Response: ', response.data);
 
-    let token;
+    // OLD STUFF
 
-    try{
-      token = JSON.parse(response.data.body).access_token;
-    } catch (e) {
-      window.location.reload()
-    }
 
-    return token;
+    // // Get the cookies from the login
+    // let response;
+    // response = await axios.get('/api/getuser');
+    // console.log('Response: ', response.data);
+    //
+    // let token;
+    //
+    // try{
+    //   token = JSON.parse(response.data.body).access_token;
+    // } catch (e) {
+    //   window.location.reload()
+    // }
+    //
+    // return token;
 
   }
 
   const dataFetch = async (id) => {
     // Load the json file with the id
     console.log('Fetching ID: ', id);
+
 
     // Fetch the recipe data
     setLoadingMessage('Fetching Recipe Data...');
@@ -81,6 +100,8 @@ export default function Page() {
     }
 
     console.log('Recipe: ', recipeData);
+
+    setRecipe(recipeData);
 
     // Set the title of tha page
     document.title = recipeData.name + ' | The Hungry Scholars Survival Handbook';
@@ -143,8 +164,6 @@ export default function Page() {
       const priceInfo: any = apiPrices.find((price: any) => price.productId === recipeData.ingredients[i].id);
       recipeData.ingredients[i].name = priceInfo.name;
     }
-
-    setRecipe(recipeData);
 
     // Clear the loading message
     setLoadingMessage("");
@@ -515,6 +534,8 @@ export default function Page() {
               {/*    <span className="font-normal text-[16px] text-white"> Add All To Cart </span>*/}
               {/*  </button>*/}
               {/*</motion.div>*/}
+
+              {STATIC &&
               <h1
                 style={
                     {
@@ -529,7 +550,7 @@ export default function Page() {
                         borderRadius: '10px',
                     }
                 }
-              >Please note: prices may not be updated due to temporary inconveniences</h1>
+              >Please note: prices may not be updated due to temporary inconveniences</h1>}
               <div className="mt-[50px] flex flex-col gap-[30px]">
                 {recipe?.ingredients.map((item, index) => (
                     <InsightCard

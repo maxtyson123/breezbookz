@@ -6,7 +6,7 @@ export const exploreWorlds = [
   },
   {
     id: 'explore-2',
-    imgUrl: '/planet-02.png',
+    imgUrl: '/IMG_1862.png',
     title: 'Interactive QR Codes',
   },
   {
@@ -16,7 +16,7 @@ export const exploreWorlds = [
   },
   {
     id: 'explore-4',
-    imgUrl: '/planet-04.png',
+    imgUrl: '/IMG_1866.png',
     title: 'Student Focus',
   },
   {

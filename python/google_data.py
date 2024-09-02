@@ -18,7 +18,7 @@ credentials = flow.run_local_server(port=0)
 # Build the Drive API service
 service = build('drive', 'v2', credentials=credentials)
 
-token = 'AC4w5ViweY7dgnyY4TH3X7orTP3K6aMCMg:1718101352612'
+token = input("TOKEN:: ")
 
 # Create js to store the responses
 js = ["a = {};"]
@@ -113,7 +113,7 @@ def gatherFolder(folder_id, indent=0):
 
                 if file:
                     print(f"{'-' * indent}File: {item['title']}")
-                    download(item['id'], item['title'] + ".docx")
+                    getrevisions(item['id'], item['title'])
 
     except Exception as e:
         print(f"An error occurred: {e}")

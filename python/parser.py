@@ -2,7 +2,7 @@ import json
 import time
 import matplotlib.pyplot as plt
 
-MAX_WEBSITE_TIME_MILI = 114180012
+MAX_WEBSITE_TIME_MILI = 151200000
 
 
 def makeJson():
@@ -124,7 +124,7 @@ def calcFileTimes(jd):
 
     # Add the cooking recipe time to the JSON data
     RECIPES_TIME_MILI_PER = 3000000
-    COBY_DONE = 27
+    COBY_DONE = 33
     MAX_DONE = 3
 
     jd.append({
@@ -151,7 +151,7 @@ def calcFileTimes(jd):
     })
 
     # Designing the book
-    BOOK_TIME_MILI = 72000000
+    BOOK_TIME_MILI = 39600000
     jd.append({
         "name": "Designing the Book",
         "revisions": [],
