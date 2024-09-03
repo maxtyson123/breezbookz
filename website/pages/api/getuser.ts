@@ -21,13 +21,8 @@ export default async function handler(
     };
 
 
-    // Create a new Humanoid instance
-    const Humanoid = require("humanoid-js");
-    let humanoid = new Humanoid(false);
 
-
-
-    response.status(200).json(await humanoid.get("https://www.paknsave.co.nz/CommonApi/Account/GetCurrentUser"));
+    response.status(200).json("asd");
 
     //
     // // Send the request
