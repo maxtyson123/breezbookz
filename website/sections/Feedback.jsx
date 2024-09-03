@@ -26,7 +26,7 @@ const Feedback = () => (
             Conner Owen O'Neil
           </h4>
           <p className="mt-[8px] font-normal sm:text-[18px] text-[12px] sm:leading-[22.68px] leading-[16.68px] text-white">
-            University Student
+            Student
           </p>
         </div>
 
