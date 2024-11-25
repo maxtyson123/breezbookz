@@ -1,13 +1,39 @@
 import json
+import sys
 import time
 import matplotlib.pyplot as plt
 
-MAX_WEBSITE_TIME_MILI = 151200000
+# External
+COBY_COOKING_RECPIE_TIME_MILI   = 62220000              # 17 HR
+MAX_WEBSITE_TIME_MILI           = 165600000 + 3180000   # 46 HR 53 MIN
+MAX_BOOK_DESIGN_TIME_MILI       = 46800000 + 1800000    # 13 HR 30 MIN
+COBY_BOOK_DESIGN_TIME_MILI      = 7200000 + 1800000     # 2 HR 30 MIN
+
+YES_KERIKERI_TRADE_FARE_TIME_MILI =  21600000 + 1800000 # 6 hr 30 min (Max, Coby, William)
+YES_KERIKERI_REGIONAL_TIME_MILI   =  25200000           # 7 hr  (Max, Coby, Liam)
 
 
 def makeJson():
     # Read the file
     jsonData = json.load(open('bb.json'))
+
+    # File Paths
+    file_paths = json.load(open('files.json'))
+
+    # Check if any files are missing
+    missing_files = []
+    for path in file_paths:
+        found = False
+        for file in jsonData:
+            if path.split("/")[-1].replace(' ', '_').replace('.', '_').replace('(', '_').replace(')', '_').replace(')', '_').replace("'", "_") == file.split("_file_name-")[1]:
+                found = True
+                break
+        if not found:
+            missing_files.append(path)
+    for file in missing_files:
+        print(f"File not found: {file}")
+    if len(missing_files) == 0:
+        print("All files found")
 
     # Create new JSON data
     newJsonData = []
@@ -16,11 +42,21 @@ def makeJson():
     for file in jsonData:
 
         # Create a new entry for the file
+        name = file.split("_file_name-")[1]
+
+        for path in file_paths:
+            if path.split("/")[-1].replace(' ', '_').replace('.', '_').replace('(', '_').replace(')', '_').replace(')', '_').replace("'", "_") == name:
+                name = path
+                break
+
+        if "Song" in name:
+            continue
+
         data = {
-            "name": file.split("_file_name-")[1],
-            "revisions": [],
-            "usermap": {}
-        }
+                "name": name,
+                "revisions": [],
+                "usermap": {}
+            }
 
         # Go through each revision in the file
         prev_endMillis = None
@@ -58,55 +94,31 @@ def makeJson():
         # Add the data to the new JSON data
         newJsonData.append(data)
 
-
     # Save to a nicely indented JSON file
     with open('revisions.json', 'w') as f:
         json.dump(newJsonData, f, indent=4)
 
     return newJsonData;
 
+def addExternalTimes(jd):
 
-def calcFileTimes(jd):
-    # Loop through each file
-    for file in jd:
 
-        revisions = file["revisions"]
+    # Add external times
+    jd.append({
+        "name": "Cooking Recipe",
+        "revisions": [],
+        "usermap": {},
+        "combined_times": [{
+            "start": 0,
+            "end": COBY_COOKING_RECPIE_TIME_MILI,
+            "length": COBY_COOKING_RECPIE_TIME_MILI,
+            "date": time.ctime(0),
+            "users": [
+                "Coby Jones",
+            ],
+        }]
+    })
 
-        combined_times = []
-        start_time = revisions[0]['endMillis']
-        end_time = revisions[0]['endMillis']
-
-        for i in range(1, len(revisions)):
-            current_time = revisions[i]['endMillis']
-            if (current_time - end_time) <= 600000:
-                # If the current time is within 10 minutes of the end time, extend the end time
-                end_time = current_time
-            else:
-                # If the current time is more than 10 minutes from the end time, finalize the current range
-                combined_times.append({
-                    "start": start_time,
-                    "end": end_time,
-                    "length": end_time - start_time,
-                    "date": time.ctime(start_time / 1000),
-                    "users": revisions[i - 1]['users'],
-                })
-                # Start a new range
-                start_time = current_time
-                end_time = current_time
-
-        # Append the last range
-        combined_times.append({
-            "start": start_time,
-            "end": end_time,
-            "length": end_time - start_time,
-            "date": time.ctime(start_time / 1000),
-            "users": revisions[-1]['users'],
-        })
-
-        # Save the combined times to the file
-        file["combined_times"] = combined_times
-
-    # Add the website time to the JSON data
     jd.append({
         "name": "Website",
         "revisions": [],
@@ -122,53 +134,128 @@ def calcFileTimes(jd):
         }]
     })
 
-    # Add the cooking recipe time to the JSON data
-    RECIPES_TIME_MILI_PER = 3000000
-    COBY_DONE = 33
-    MAX_DONE = 3
-
     jd.append({
-        "name": "Cooking Recipes",
+        "name": "Book Design",
         "revisions": [],
         "usermap": {},
         "combined_times": [{
             "start": 0,
-            "end": RECIPES_TIME_MILI_PER * COBY_DONE,
-            "length": RECIPES_TIME_MILI_PER * COBY_DONE,
+            "end": MAX_BOOK_DESIGN_TIME_MILI,
+            "length": MAX_BOOK_DESIGN_TIME_MILI,
+            "date": time.ctime(0),
+            "users": [
+                "Max Tyson",
+            ],
+            },
+            {
+            "start": 0,
+            "end": COBY_BOOK_DESIGN_TIME_MILI,
+            "length": COBY_BOOK_DESIGN_TIME_MILI,
             "date": time.ctime(0),
             "users": [
                 "Coby Jones",
             ],
-        }, {
-            "start": 0,
-            "end": RECIPES_TIME_MILI_PER * MAX_DONE,
-            "length": RECIPES_TIME_MILI_PER * MAX_DONE,
-            "date": time.ctime(0),
-            "users": [
-                "Max Tyson",
-            ],
-        }]
+            }
+        ]
     })
 
-    # Designing the book
-    BOOK_TIME_MILI = 39600000
     jd.append({
-        "name": "Designing the Book",
+        "name": "Yes Kerikeri Trade Fare",
         "revisions": [],
         "usermap": {},
         "combined_times": [{
             "start": 0,
-            "end": BOOK_TIME_MILI,
-            "length": BOOK_TIME_MILI,
+            "end": YES_KERIKERI_TRADE_FARE_TIME_MILI,
+            "length": YES_KERIKERI_TRADE_FARE_TIME_MILI,
             "date": time.ctime(0),
             "users": [
                 "Max Tyson",
+                "Coby Jones",
+                "William Renes",
             ],
         }]
     })
 
+    jd.append({
+        "name": "Yes Kerikeri Regional",
+        "revisions": [],
+        "usermap": {},
+        "combined_times": [{
+            "start": 0,
+            "end": YES_KERIKERI_REGIONAL_TIME_MILI,
+            "length": YES_KERIKERI_REGIONAL_TIME_MILI,
+            "date": time.ctime(0),
+            "users": [
+                "Max Tyson",
+                "Coby Jones",
+                "Liam Rosemergy",
+            ],
+        }]
+    })
 
     return jd
+
+def calcFileTimes(jd):
+    # Loop through each file
+    for file in jd:
+
+        revisions = file["revisions"]
+
+        combined_times = []
+
+
+        # get the user names from the revision
+        users = []
+        for i in range(len(revisions)):
+            for user in revisions[i]['users']:
+                if user not in users:
+                    users.append(user)
+
+        # Go through each user and count their time
+        for user in users:
+
+            start_time = revisions[0]['endMillis']
+            end_time = revisions[0]['endMillis']
+
+            for i in range(1, len(revisions)):
+
+                rev = revisions[i]
+
+                # If the user is in the revision, add the time to the range
+                if user not in rev['users']:
+                    continue
+
+                current_time = rev['endMillis']
+                if (current_time - end_time) <= 300000:
+                    # If the current time is within 5 minutes of the end time, extend the end time
+                    end_time = current_time
+                else:
+                    # If the current time is more than 10 minutes from the end time, finalize the current range
+                    combined_times.append({
+                        "start": start_time,
+                        "end": end_time,
+                        "length": end_time - start_time,
+                        "date": time.ctime(start_time / 1000),
+                        "users": [user],
+                    })
+                    # Start a new range
+                    start_time = current_time
+                    end_time = current_time
+
+        # Append the last range
+        combined_times.append({
+            "start": start_time,
+            "end": end_time,
+            "length": end_time - start_time,
+            "date": time.ctime(start_time / 1000),
+            "users": revisions[-1]['users'],
+        })
+
+        # Save the combined times to the file
+        file["combined_times"] = combined_times
+
+    # Add the external times
+    return addExternalTimes(jd)
 
 def printTime(milliseconds):
 

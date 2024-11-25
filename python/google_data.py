@@ -12,7 +12,7 @@ SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 SERVICE_ACCOUNT_FILE = 'breez-bookz-b4c8f459fc68.json'
 
 # Authenticate using the service account file
-flow = InstalledAppFlow.from_client_secrets_file('a.json', SCOPES)
+flow = InstalledAppFlow.from_client_secrets_file('cred.json', SCOPES)
 credentials = flow.run_local_server(port=0)
 
 # Build the Drive API service
@@ -22,6 +22,7 @@ token = input("TOKEN:: ")
 
 # Create js to store the responses
 js = ["a = {};"]
+FILES = []
 
 ROOTFOLDER = "1lbTfH1vS2nBaWLi3oL2vPVKLpzdUfqG5"
 
@@ -37,6 +38,8 @@ def getrevisions(file_id, name):
         items = revisions.get('items', [])
 
         if not items:
+            print('No revisions found: ', name)
+            FILES[len(FILES) - 1] += " - No revisions found"
             return
         else:
             for x in range(len(items)):
@@ -91,7 +94,7 @@ def download(file_id, name):
     except Exception as e:
         print(f"An error occurred while downloading {name}: {e}")
 
-def gatherFolder(folder_id, indent=0):
+def gatherFolder(folder_id, path, indent=0):
     # Query to get files in the specified folder
     query = f"'{folder_id}' in parents"
 
@@ -109,10 +112,11 @@ def gatherFolder(folder_id, indent=0):
 
                 if folder:
                     print(f"{'-' * indent}Folder: {item['title']}")
-                    gatherFolder(item['id'], indent + 1)
+                    gatherFolder(item['id'], path + item['title'] + "/", indent + 1)
 
                 if file:
                     print(f"{'-' * indent}File: {item['title']}")
+                    FILES.append(path + item['title'])
                     getrevisions(item['id'], item['title'])
 
     except Exception as e:
@@ -122,10 +126,14 @@ def main():
     # Create the output folder
     os.makedirs('output', exist_ok=True)
 
-    gatherFolder(ROOTFOLDER)
+    gatherFolder(ROOTFOLDER, "/")
 
     # Add js to download the revisions as a JSON file
     js[0] += "await fetch('data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(a))).then(r => r.blob()).then(blob => {let a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'revisions.json'; a.click();});"
+
+    # Write the files to json
+    with open('files.json', 'w') as f:
+        json.dump(FILES, f, indent=4)
 
     # Copy the js to the clipboard
     pyperclip.copy(js[0])
